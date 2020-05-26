@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Evgenia Alfimova](https://up.htmlacademy.ru/javascript/20/user/1033161).
-* Наставник: `Неизвестно`.
+* Наставник: [Евгений Алипкин](https://up.htmlacademy.ru/javascript/20/user/38158).
 
 ---
 
