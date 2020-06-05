@@ -1,5 +1,5 @@
+'use strict';
 var advertAttributes = {
-  COUNT: 8,
   TYPE_OF_RESIDENCE: ['palace', 'flat', 'house', 'bungalo'],
   CHEKING_TIME: ['12: 00', '13: 00', '14: 00'],
   FEATURES: [
@@ -15,60 +15,84 @@ var advertAttributes = {
     'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
     'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
   ],
-  TITLES: [
-    'Уютное гнездышко для молодоженов',
-    'Маленькая квартирка рядом с парком',
-    'Небольшая лавочка в парке',
-    'Императорский дворец в центре Токио',
-    'Милейший чердачок',
-    'Наркоманский притон',
-    'Чёткая хата',
-    'Стандартная квартира в центре'
-  ]
+  COUNT: 8
 };
 
-function getAvatarPath(i) {
-  var avatars = '0' + (i + 1);
-  return 'img/avatars/user' + avatars + '.png'
-}
+var offsetWidth = document.querySelector('.map__pins').offsetWidth;
 
 function createAdvert(i) {
+  var yLocation = getRandomNumber(130, 630);
+  var xLocation = getRandomNumber(0, offsetWidth);
+  var addressString = xLocation + ', ' + yLocation;
   var advert = {
     'author': {
       'avatar': getAvatarPath(i)
     },
     'offer': {
-      'title': advertAttributes.TITLES[i],
-      "address": ['600, 350', '500, 200', '400, 600'],
-      "price": [100, 200, 300],
-      'type': TYPE_OF_RESIDENCE.random(1, 4),
-      "rooms": random(1, 4),
-      "guests": random(1, 4),
-      "checkin": CHEKING_TIME.random(1, 3),
-      "checkout": CHEKING_TIME.random(1, 3),
-      "features": ,
-      "description": 'Описание объявления',
-      "photos": ,
+      'title': 'Заголовок объявления',
+      'address': addressString,
+      'price': getRandomNumber(500, 10000),
+      'type': getRandomElement(advertAttributes.TYPE_OF_RESIDENCE),
+      'rooms': getRandomNumber(1, 4),
+      'guests': getRandomNumber(1, 6),
+      'checkin': getRandomElement(advertAttributes.CHEKING_TIME),
+      'checkout': getRandomElement(advertAttributes.CHEKING_TIME),
+      'features': getRandomElement(advertAttributes.FEATURES),
+      'description': 'Описание объявления',
+      'photos': getRandomElement(advertAttributes.PHOTOS),
     },
     'location': {
-      'x': xPosition,
-      'y': yPosition,
+      'x': xLocation,
+      'y': yLocation,
     }
   };
   return advert;
-};
+}
 
-function random(min, max) {
+function getAvatarPath(i) {
+  var avatars = '0' + (i + 1);
+  return 'img/avatars/user' + avatars + '.png';
+}
+
+function getRandomNumber(min, max) {
   var rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
-};
+}
+
+function getRandomElement(array) {
+  var randomIndex = Math.floor(Math.random() * array.length);
+  return array[randomIndex];
+}
 
 function createAdvertCollection() {
   var adverts = [];
   for (var i = 0; i < advertAttributes.COUNT; i++) {
-    adverts.push(
-      createAdvert(i)
-    );
+    adverts.push(createAdvert(i));
   }
   return adverts;
 }
+createAdvertCollection();
+
+
+document.querySelector('.map').classList.remove('map--faded');
+
+var pin = document.querySelector('#pin').content.querySelector('.map__pin');
+
+function createPin(adv) {
+  var mapPin = pin.cloneNode(true);
+  mapPin.style.left = adv.location.x + 'px';
+  mapPin.style.top = adv.location.y + 'px';
+  mapPin.querySelector('img').alt = adv.offer.title;
+  mapPin.querySelector('img').src = adv.author.avatar;
+  return mapPin;
+}
+
+function renderMapPin() {
+  var fragment = document.createDocumentFragment();
+  var createAdv = createAdvertCollection();
+  for (var i = 0; i < advertAttributes.COUNT; i++) {
+    fragment.appendChild(createPin(createAdv[i]));
+  }
+  document.querySelector('.map__pins').appendChild(fragment);
+}
+renderMapPin();
