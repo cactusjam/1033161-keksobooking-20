@@ -15,7 +15,9 @@ var advertAttributes = {
     'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
     'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
   ],
-  COUNT: 8
+  COUNT: 8,
+  GAP_PIN_Y = 70,
+  GAP_PIN_X = 50
 };
 
 var offsetWidth = document.querySelector('.map__pins').offsetWidth;
@@ -80,8 +82,8 @@ var pin = document.querySelector('#pin').content.querySelector('.map__pin');
 
 function createPin(adv) {
   var mapPin = pin.cloneNode(true);
-  mapPin.style.left = adv.location.x + 'px';
-  mapPin.style.top = adv.location.y + 'px';
+  mapPin.style.left = adv.location.x - GAP_PIN_X + 'px';
+  mapPin.style.top = adv.location.y - GAP_PIN_Y + 'px';
   mapPin.querySelector('img').alt = adv.offer.title;
   mapPin.querySelector('img').src = adv.author.avatar;
   return mapPin;
