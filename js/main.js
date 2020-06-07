@@ -119,8 +119,6 @@ function createAdvertCollection() {
   return adverts;
 }
 var advertCollection = createAdvertCollection();
-console.log(advertCollection);
-
 
 map.classList.remove('map--faded');
 
