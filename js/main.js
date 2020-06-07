@@ -1,4 +1,6 @@
 'use strict';
+var pinsContainer = document.querySelector('.map__pins');
+var COUNT = 8;
 var advertAttributes = {
   TYPE_OF_RESIDENCE: ['palace', 'flat', 'house', 'bungalo'],
   CHEKING_TIME: ['12: 00', '13: 00', '14: 00'],
@@ -14,33 +16,55 @@ var advertAttributes = {
     'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
     'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
     'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
-  ],
-  COUNT: 8,
-  GAP_PIN_Y: 70,
-  GAP_PIN_X: 50
+  ]
 };
 
-var offsetWidth = document.querySelector('.map__pins').offsetWidth;
+var pinSize = {
+  HEIGHT: 70,
+  WIDTH: 50
+};
 
-function createAdvert(i) {
-  var yLocation = getRandomNumber(130, 630);
-  var xLocation = getRandomNumber(0, offsetWidth);
+var mapSize = {
+  MAP_Y_MIN: 130,
+  MAP_Y_MAX: 630,
+  MAP_X_MIN: 0,
+  MAP_X_MAX: pinsContainer.offsetWidth
+};
+
+var price = {
+  PRICE_MIN: 500,
+  PRICE_MAX: 10000
+};
+
+var roomNumber = {
+  MIN_ROOM: 1,
+  MAX_ROOM: 4
+};
+
+var guestNumber = {
+  MIN_GUEST: 1,
+  MAX_GUEST: 6
+};
+
+function createAdvert(index) {
+  var yLocation = getRandomNumber(mapSize.MAP_Y_MIN, mapSize.MAP_Y_MAX);
+  var xLocation = getRandomNumber(mapSize.MAP_X_MIN, mapSize.MAP_X_MAX);
   var addressString = xLocation + ', ' + yLocation;
   var advert = {
     'author': {
-      'avatar': getAvatarPath(i)
+      'avatar': getAvatarPath(index)
     },
     'offer': {
-      'title': 'Заголовок объявления',
+      'title': 'Заголовок объявления ' + (index + 1),
       'address': addressString,
-      'price': getRandomNumber(500, 10000),
+      'price': getRandomNumber(price.PRICE_MIN, price.PRICE_MAX),
       'type': getRandomElement(advertAttributes.TYPE_OF_RESIDENCE),
-      'rooms': getRandomNumber(1, 4),
-      'guests': getRandomNumber(1, 6),
+      'rooms': getRandomNumber(roomNumber.MIN_ROOM, roomNumber.MAX_ROOM),
+      'guests': getRandomNumber(guestNumber.MIN_GUEST, guestNumber.MAX_GUEST),
       'checkin': getRandomElement(advertAttributes.CHEKING_TIME),
       'checkout': getRandomElement(advertAttributes.CHEKING_TIME),
       'features': getRandomElement(advertAttributes.FEATURES),
-      'description': 'Описание объявления',
+      'description': 'Описание объявления ' + (index + 1),
       'photos': getRandomElement(advertAttributes.PHOTOS),
     },
     'location': {
@@ -51,9 +75,8 @@ function createAdvert(i) {
   return advert;
 }
 
-function getAvatarPath(i) {
-  var avatars = '0' + (i + 1);
-  return 'img/avatars/user' + avatars + '.png';
+function getAvatarPath(index) {
+  return 'img/avatars/user0' + (index + 1) + '.png';
 }
 
 function getRandomNumber(min, max) {
@@ -68,7 +91,7 @@ function getRandomElement(array) {
 
 function createAdvertCollection() {
   var adverts = [];
-  for (var i = 0; i < advertAttributes.COUNT; i++) {
+  for (var i = 0; i < COUNT; i++) {
     adverts.push(createAdvert(i));
   }
   return adverts;
@@ -82,19 +105,20 @@ var pin = document.querySelector('#pin').content.querySelector('.map__pin');
 
 function createPin(adv) {
   var mapPin = pin.cloneNode(true);
-  mapPin.style.left = adv.location.x - advertAttributes.GAP_PIN_X + 'px';
-  mapPin.style.top = adv.location.y - advertAttributes.GAP_PIN_Y + 'px';
-  mapPin.querySelector('img').alt = adv.offer.title;
-  mapPin.querySelector('img').src = adv.author.avatar;
+  var pinImage = mapPin.querySelector('img');
+  mapPin.style.left = adv.location.x - pinSize.WIDTH + 'px';
+  mapPin.style.top = adv.location.y - pinSize.HEIGHT + 'px';
+  pinImage.alt = adv.offer.title;
+  pinImage.src = adv.author.avatar;
   return mapPin;
 }
 
-function renderMapPin() {
+function renderMapPins() {
   var fragment = document.createDocumentFragment();
   var createAdv = createAdvertCollection();
-  for (var i = 0; i < advertAttributes.COUNT; i++) {
+  for (var i = 0; i < COUNT; i++) {
     fragment.appendChild(createPin(createAdv[i]));
   }
-  document.querySelector('.map__pins').appendChild(fragment);
+  pinsContainer.appendChild(fragment);
 }
-renderMapPin();
+renderMapPins();
