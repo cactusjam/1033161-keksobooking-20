@@ -2,7 +2,7 @@
 var pinsContainer = document.querySelector('.map__pins');
 var map = document.querySelector('.map');
 var mapFilterContainer = document.querySelector('.map__filters-container');
-var COUNT = 8;
+var ADV_COUNT = 8;
 var advertAttributes = {
   TYPE_OF_RESIDENCE: ['palace', 'flat', 'house', 'bungalo'],
   CHEKING_TIME: ['12: 00', '13: 00', '14: 00'],
@@ -27,25 +27,25 @@ var pinSize = {
 };
 
 var mapSize = {
-  MAP_Y_MIN: 130,
-  MAP_Y_MAX: 630,
-  MAP_X_MIN: 0,
-  MAP_X_MAX: pinsContainer.offsetWidth
+  Y_MIN: 130,
+  Y_MAX: 630,
+  X_MIN: 0,
+  X_MAX: pinsContainer.offsetWidth
 };
 
 var price = {
-  PRICE_MIN: 500,
-  PRICE_MAX: 10000
+  MIN: 500,
+  MAX: 10000
 };
 
 var roomNumber = {
-  MIN_ROOM: 1,
-  MAX_ROOM: 4
+  MIN: 1,
+  MAX: 4
 };
 
 var guestNumber = {
-  MIN_GUEST: 1,
-  MAX_GUEST: 6
+  MIN: 1,
+  MAX: 6
 };
 
 var placeType = {
@@ -56,8 +56,8 @@ var placeType = {
 };
 
 function createAdvert(index) {
-  var yLocation = getRandomNumber(mapSize.MAP_Y_MIN, mapSize.MAP_Y_MAX);
-  var xLocation = getRandomNumber(mapSize.MAP_X_MIN, mapSize.MAP_X_MAX);
+  var yLocation = getRandomNumber(mapSize.Y_MIN, mapSize.Y_MAX);
+  var xLocation = getRandomNumber(mapSize.X_MIN, mapSize.X_MAX);
   var addressString = xLocation + ', ' + yLocation;
   var advert = {
     'author': {
@@ -66,10 +66,10 @@ function createAdvert(index) {
     'offer': {
       'title': 'Заголовок объявления ' + (index + 1),
       'address': addressString,
-      'price': getRandomNumber(price.PRICE_MIN, price.PRICE_MAX),
+      'price': getRandomNumber(price.MIN, price.MAX),
       'type': getRandomElement(advertAttributes.TYPE_OF_RESIDENCE),
-      'rooms': getRandomNumber(roomNumber.MIN_ROOM, roomNumber.MAX_ROOM),
-      'guests': getRandomNumber(guestNumber.MIN_GUEST, guestNumber.MAX_GUEST),
+      'rooms': getRandomNumber(roomNumber.MIN, roomNumber.MAX),
+      'guests': getRandomNumber(guestNumber.MIN, guestNumber.MAX),
       'checkin': getRandomElement(advertAttributes.CHEKING_TIME),
       'checkout': getRandomElement(advertAttributes.CHEKING_TIME),
       'features': getRandomArrayLength(advertAttributes.FEATURES),
@@ -111,14 +111,13 @@ function getRandomElement(array) {
   return array[randomIndex];
 }
 
-function createAdvertCollection() {
+function createAdverts(count) {
   var adverts = [];
-  for (var i = 0; i < COUNT; i++) {
+  for (var i = 0; i < count; i++) {
     adverts.push(createAdvert(i));
   }
   return adverts;
 }
-var advertCollection = createAdvertCollection();
 
 map.classList.remove('map--faded');
 
@@ -134,18 +133,18 @@ function createPin(adv) {
   return mapPin;
 }
 
-function renderMapPins() {
+var advertisements = createAdverts(ADV_COUNT);
+
+function renderMapPins(adverts) {
   var fragment = document.createDocumentFragment();
-  var createAdv = createAdvertCollection();
-  for (var i = 0; i < COUNT; i++) {
-    fragment.appendChild(createPin(createAdv[i]));
+  for (var i = 0; i < adverts.length; i++) {
+    fragment.appendChild(createPin(adverts[i]));
   }
   pinsContainer.appendChild(fragment);
 }
-renderMapPins();
+renderMapPins(advertisements);
 
-
-var firstAdvert = advertCollection[0];
+var firstAdvert = advertisements[0];
 var cardTemplate = document.querySelector('#card')
   .content
   .querySelector('.map__card');
@@ -159,28 +158,29 @@ var renderAdvertCard = function (advertData) {
   cardElement.querySelector('.popup__type').textContent = placeType[advertData.offer.type.toUpperCase()];
   cardElement.querySelector('.popup__text--capacity').textContent = advertData.offer.rooms + ' комнаты для ' + advertData.offer.guests + ' гостей';
   cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + advertData.offer.checkin + ', выезд до ' + advertData.offer.checkout;
-  filterFeatures(cardElement, advertData);
   cardElement.querySelector('.popup__description').textContent = advertData.offer.description;
   addCardPhotos(cardElement, advertData);
+  filterFeatures(cardElement, advertData);
   mapFilterContainer.insertAdjacentElement('beforebegin', cardElement);
   return cardElement;
 };
 
 function filterFeatures(cardElement, advertData) {
-  var cardFeatureCollection = cardElement.querySelectorAll('.popup__feature');
-  for (var i = 0; i < cardFeatureCollection.length; i++) {
-    var liElement = cardFeatureCollection[i];
-    var featurePresent = false;
+  var popupFeatures = cardElement.querySelector('.popup__features');
+  var featuresFragment = document.createDocumentFragment();
 
-    for (var advI = 0; advI < advertData.offer.features.length; advI++) {
-      if (liElement.className.includes(advertData.offer.features[advI]) === true) {
-        featurePresent = true;
-      }
+  if (advertData.offer.features.length) {
+    popupFeatures.innerHTML = '';
+
+    for (var i = 0; i < advertData.offer.features.length; i++) {
+      var featureItem = document.createElement('li');
+      featureItem.classList = 'popup__feature popup__feature--' + advertData.offer.features[i];
+      featuresFragment.appendChild(featureItem);
     }
 
-    if (featurePresent === false) {
-      liElement.remove();
-    }
+    popupFeatures.appendChild(featuresFragment);
+  } else {
+    popupFeatures.remove();
   }
 }
 
