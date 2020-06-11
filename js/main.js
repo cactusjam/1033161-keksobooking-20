@@ -61,7 +61,7 @@ function createAdvert(index) {
   var addressString = xLocation + ', ' + yLocation;
   var advert = {
     'author': {
-      'avatar': getAvatarPath(index)
+      'avatar': 'img/avatars/user0' + (index + 1) + '.png'
     },
     'offer': {
       'title': 'Заголовок объявления ' + (index + 1),
@@ -95,10 +95,6 @@ function getRandomArrayLength(array) {
     }
   }
   return newArray;
-}
-
-function getAvatarPath(index) {
-  return 'img/avatars/user0' + (index + 1) + '.png';
 }
 
 function getRandomNumber(min, max) {
