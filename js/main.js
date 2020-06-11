@@ -115,7 +115,7 @@ function createAdverts(count) {
   return adverts;
 }
 
-map.classList.remove('map--faded');
+// map.classList.remove('map--faded');
 
 var pin = document.querySelector('#pin').content.querySelector('.map__pin');
 
@@ -138,9 +138,8 @@ function renderMapPins(adverts) {
   }
   pinsContainer.appendChild(fragment);
 }
-renderMapPins(advertisements);
 
-var firstAdvert = advertisements[0];
+// var firstAdvert = advertisements[0];
 var cardTemplate = document.querySelector('#card')
   .content
   .querySelector('.map__card');
@@ -173,7 +172,6 @@ function filterFeatures(cardElement, advertData) {
       featureItem.classList = 'popup__feature popup__feature--' + advertData.offer.features[i];
       featuresFragment.appendChild(featureItem);
     }
-
     popupFeatures.appendChild(featuresFragment);
   } else {
     popupFeatures.remove();
@@ -191,5 +189,41 @@ function addCardPhotos(cardElement, advertData) {
     cardsPhotoCollection.appendChild(newPhotoImg);
   }
 }
+// renderAdvertCard(firstAdvert);
+var mapPinMain = document.querySelector('.map__pin--main');
+var mapFilters = document.querySelector('.map__filters');
+var mapItems = mapFilters.querySelectorAll('select, fieldset');
+var adForm = document.querySelector('.ad-form');
+var adFormFieldset = adForm.querySelectorAll('fieldset');
 
-renderAdvertCard(firstAdvert);
+
+mapPinMain.addEventListener('mousedown', function (event) {
+  if (event.which === 1) {
+    enableForm();
+  }
+});
+
+mapPinMain.addEventListener('keydown', function () {
+  enableForm();
+});
+
+var changeFilter = function (array) {
+  array.forEach(function (select) {
+    select.disabled = (select.disabled) ? false : true;
+  });
+};
+
+var enableForm = function () {
+  renderMapPins(advertisements);
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  changeFilter(adFormFieldset);
+  changeFilter(mapItems);
+};
+
+var disableForm = function () {
+  changeFilter(adFormFieldset);
+  changeFilter(mapItems);
+};
+
+disableForm();
