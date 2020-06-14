@@ -201,8 +201,25 @@ var mapFilters = document.querySelector('.map__filters');
 var mapItems = mapFilters.querySelectorAll('select, fieldset');
 var adForm = document.querySelector('.ad-form');
 var adFormFieldset = adForm.querySelectorAll('fieldset');
+var adFormSubmit = adForm.querySelector('.ad-form__submit');
 var adFormAddress = adForm.querySelector('#address');
+var adFormRooms = adForm.querySelector('#room_number');
+var adFormGuests = adForm.querySelector('#capacity');
+var adFormTitle = adForm.querySelector('#title');
+var roomGuestAllowed = {
+  1: [1],
+  2: [1, 2],
+  3: [1, 2, 3],
+  100: [0]
+};
 
+var addFormListener = function () {
+  adFormSubmit.addEventListener('click', adFormSubmitClick);
+};
+
+var removeFormListener = function () {
+  adFormSubmit.removeEventListener('click', adFormSubmitClick);
+};
 
 mainPin.addEventListener('mousedown', function (event) {
   if (event.which === 1) {
@@ -242,12 +259,24 @@ var enableForm = function () {
   changeFilter(adFormFieldset);
   changeFilter(mapItems);
   addressCoords(getMapPinMainCoords(true));
+  addFormListener();
 };
 
 var disableForm = function () {
   changeFilter(adFormFieldset);
   changeFilter(mapItems);
   addressCoords(getMapPinMainCoords(false));
+  removeFormListener();
 };
 
 disableForm();
+
+var checkRoomValidity = function () {
+  var roomGuests = roomGuestAllowed[adFormRooms.value];
+  var message = roomGuests.indexOf(+adFormGuests.value) === -1 ? 'Недостаточно спальных мест для указанного количества гостей' : '';
+  adFormGuests.setCustomValidity(message);
+};
+
+var adFormSubmitClick = function () {
+  checkRoomValidity();
+};
