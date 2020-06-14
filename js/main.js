@@ -115,8 +115,6 @@ function createAdverts(count) {
   return adverts;
 }
 
-// map.classList.remove('map--faded');
-
 var pin = document.querySelector('#pin').content.querySelector('.map__pin');
 
 function createPin(adv) {
@@ -206,12 +204,6 @@ var adFormAddress = adForm.querySelector('#address');
 var adFormRooms = adForm.querySelector('#room_number');
 var adFormGuests = adForm.querySelector('#capacity');
 var adFormTitle = adForm.querySelector('#title');
-var roomGuestAllowed = {
-  1: [1],
-  2: [1, 2],
-  3: [1, 2, 3],
-  100: [0]
-};
 
 var addFormListener = function () {
   adFormSubmit.addEventListener('click', adFormSubmitClick);
@@ -272,10 +264,17 @@ var disableForm = function () {
 disableForm();
 
 var checkRoomValidity = function () {
-  var roomGuests = roomGuestAllowed[adFormRooms.value];
-  var message = roomGuests.indexOf(+adFormGuests.value) === -1 ? 'Недостаточно спальных мест для указанного количества гостей' : '';
-  adFormGuests.setCustomValidity(message);
+  if (adFormRooms.value === '100' && adFormGuests.value !== '0') {
+    adFormGuests.setCustomValidity('Возможен только вариант размещения "Не для гостей"');
+  } else if (adFormGuests.value > adFormRooms.value) {
+    adFormGuests.setCustomValidity('Недостаточно спальных мест для указанного количества гостей');
+  } else if (adFormGuests.value === '0' && adFormRooms.value !== '100') {
+    adFormGuests.setCustomValidity('Минимальное количество гостей - 1');
+  } else {
+    adFormGuests.setCustomValidity('');
+  }
 };
+
 
 var adFormSubmitClick = function () {
   checkRoomValidity();
