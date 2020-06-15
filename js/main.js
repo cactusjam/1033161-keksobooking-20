@@ -203,7 +203,7 @@ var adFormSubmit = adForm.querySelector('.ad-form__submit');
 var adFormAddress = adForm.querySelector('#address');
 var adFormRooms = adForm.querySelector('#room_number');
 var adFormGuests = adForm.querySelector('#capacity');
-var adFormTitle = adForm.querySelector('#title');
+// var adFormTitle = adForm.querySelector('#title');
 
 var addFormListener = function () {
   adFormSubmit.addEventListener('click', adFormSubmitClick);
@@ -223,9 +223,9 @@ mainPin.addEventListener('keydown', function () {
   enableForm();
 });
 
-var changeFilter = function (array) {
+var toggleElementsDisabled = function (array, state) {
   array.forEach(function (select) {
-    select.disabled = (select.disabled) ? false : true;
+    select.disabled = state;
   });
 };
 
@@ -248,15 +248,15 @@ var enableForm = function () {
   renderMapPins(advertisements);
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
-  changeFilter(adFormFieldset);
-  changeFilter(mapItems);
+  toggleElementsDisabled(adFormFieldset, false);
+  toggleElementsDisabled(mapItems, false);
   addressCoords(getMapPinMainCoords(true));
   addFormListener();
 };
 
 var disableForm = function () {
-  changeFilter(adFormFieldset);
-  changeFilter(mapItems);
+  toggleElementsDisabled(adFormFieldset, true);
+  toggleElementsDisabled(mapItems, true);
   addressCoords(getMapPinMainCoords(false));
   removeFormListener();
 };
