@@ -116,6 +116,7 @@ function createAdverts(count) {
 }
 
 var pin = document.querySelector('#pin').content.querySelector('.map__pin');
+var fragment = document.createDocumentFragment();
 
 function createPin(adv) {
   var mapPin = pin.cloneNode(true);
@@ -124,20 +125,13 @@ function createPin(adv) {
   mapPin.style.top = adv.location.y - pinSize.HEIGHT + 'px';
   pinImage.alt = adv.offer.title;
   pinImage.src = adv.author.avatar;
-  return mapPin;
+
+  mapPin.addEventListener('click', function () {
+    renderAdvertCard(adv);
+  });
+  fragment.appendChild(mapPin);
 }
 
-var advertisements = createAdverts(ADV_COUNT);
-
-function renderMapPins(adverts) {
-  var fragment = document.createDocumentFragment();
-  for (var i = 0; i < adverts.length; i++) {
-    fragment.appendChild(createPin(adverts[i]));
-  }
-  pinsContainer.appendChild(fragment);
-}
-
-// var firstAdvert = advertisements[0];
 var cardTemplate = document.querySelector('#card')
   .content
   .querySelector('.map__card');
@@ -187,7 +181,7 @@ function addCardPhotos(cardElement, advertData) {
     cardsPhotoCollection.appendChild(newPhotoImg);
   }
 }
-// renderAdvertCard(firstAdvert);
+
 var mapPinMain = {
   WIDTH: 65,
   HEIGHT: 65,
@@ -245,12 +239,12 @@ var getMapPinMainCoords = function (active) {
 };
 
 var enableForm = function () {
-  renderMapPins(advertisements);
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
   toggleElementsDisabled(adFormFieldset, false);
   toggleElementsDisabled(mapItems, false);
   addressCoords(getMapPinMainCoords(true));
+  pinsContainer.appendChild(fragment);
   addFormListener();
 };
 
@@ -275,7 +269,11 @@ var checkRoomValidity = function () {
   }
 };
 
-
 var adFormSubmitClick = function () {
   checkRoomValidity();
 };
+
+var offerList = createAdverts(ADV_COUNT);
+offerList.forEach(function (elem) {
+  createPin(elem);
+});
