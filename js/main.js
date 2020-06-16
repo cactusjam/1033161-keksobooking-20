@@ -127,6 +127,7 @@ function createPin(adv) {
   pinImage.src = adv.author.avatar;
 
   mapPin.addEventListener('click', function () {
+    removeCard();
     renderAdvertCard(adv);
   });
   fragment.appendChild(mapPin);
@@ -138,6 +139,7 @@ var cardTemplate = document.querySelector('#card')
 
 var renderAdvertCard = function (advertData) {
   var cardElement = cardTemplate.cloneNode(true);
+  var popupClose = cardElement.querySelector('.popup__close');
   cardElement.querySelector('.popup__avatar').src = advertData.author.avatar;
   cardElement.querySelector('.popup__title').textContent = advertData.offer.title;
   cardElement.querySelector('.popup__text--address').textContent = advertData.offer.address;
@@ -149,7 +151,10 @@ var renderAdvertCard = function (advertData) {
   addCardPhotos(cardElement, advertData);
   filterFeatures(cardElement, advertData);
   mapFilterContainer.insertAdjacentElement('beforebegin', cardElement);
-  return cardElement;
+
+  popupClose.addEventListener('click', function () {
+    removeCard();
+  });
 };
 
 function filterFeatures(cardElement, advertData) {
@@ -276,4 +281,17 @@ var adFormSubmitClick = function () {
 var offerList = createAdverts(ADV_COUNT);
 offerList.forEach(function (elem) {
   createPin(elem);
+});
+
+var removeCard = function () {
+  var card = document.querySelector('.popup');
+  if (card) {
+    map.removeChild(card);
+  }
+};
+
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    removeCard();
+  }
 });
