@@ -202,6 +202,11 @@ var adFormSubmit = adForm.querySelector('.ad-form__submit');
 var adFormAddress = adForm.querySelector('#address');
 var adFormRooms = adForm.querySelector('#room_number');
 var adFormGuests = adForm.querySelector('#capacity');
+var houseType = adForm.querySelector('#type');
+var rentPrice = adForm.querySelector('#price');
+var timeIn = adForm.querySelector('#timein');
+var timeOut = adForm.querySelector('#timeout');
+
 // var adFormTitle = adForm.querySelector('#title');
 
 var addFormListener = function () {
@@ -294,4 +299,28 @@ document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {
     removeCard();
   }
+});
+
+houseType.addEventListener('change', function () {
+  if (houseType.value === 'bungalo') {
+    rentPrice.min = 0;
+    rentPrice.placeholder = 0;
+  } else if (houseType.value === 'flat') {
+    rentPrice.min = 1000;
+    rentPrice.placeholder = 1000;
+  } else if (houseType.value === 'house') {
+    rentPrice.min = 5000;
+    rentPrice.placeholder = 5000;
+  } else if (houseType.value === 'palace') {
+    rentPrice.min = 10000;
+    rentPrice.placeholder = 10000;
+  }
+});
+
+timeIn.addEventListener('change', function () {
+  timeOut.value = timeIn.value;
+});
+
+timeOut.addEventListener('change', function () {
+  timeIn.value = timeOut.value;
 });
