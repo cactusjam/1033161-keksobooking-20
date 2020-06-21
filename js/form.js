@@ -84,7 +84,7 @@
     } else {
       adFormGuests.setCustomValidity('');
     }
-  };
+  }
 
   function adFormSubmitClick() {
     checkRoomValidity();
