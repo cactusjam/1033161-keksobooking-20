@@ -11,7 +11,6 @@
   var rentPrice = adForm.querySelector('#price');
   var timeIn = adForm.querySelector('#timein');
   var timeOut = adForm.querySelector('#timeout');
-  var mapItems = window.map.mapFilters.querySelectorAll('select, fieldset');
 
   var placeType = {
     flat: {
@@ -54,19 +53,16 @@
   }
 
   function enableForm() {
-    window.map.map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     window.util.toggleElementsDisabled(adFormFieldset, false);
-    window.util.toggleElementsDisabled(mapItems, false);
-    addressCoords(window.pin.getMapPinMainCoords(true));
-    window.map.pinsContainer.appendChild(window.pin.fragment);
+    addressCoords(window.pin.сoords(true));
     addFormListener();
   }
 
   function disableForm() {
     window.util.toggleElementsDisabled(adFormFieldset, true);
-    window.util.toggleElementsDisabled(mapItems, true);
-    addressCoords(window.pin.getMapPinMainCoords(false));
+    window.util.toggleElementsDisabled(window.map.items, true);
+    addressCoords(window.pin.сoords(false));
     removeFormListener();
   }
 
@@ -99,7 +95,8 @@
   });
 
   window.form = {
-    enableForm: enableForm,
-    placeType: placeType
+    enable: enableForm,
+    placeType: placeType,
+    addressCoords: addressCoords
   };
 })();

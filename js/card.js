@@ -19,10 +19,10 @@
     cardElement.querySelector('.popup__description').textContent = advertData.offer.description;
     addCardPhotos(cardElement, advertData);
     filterFeatures(cardElement, advertData);
-    window.map.map.insertAdjacentElement('afterbegin', cardElement);
+    window.map.element.insertAdjacentElement('afterbegin', cardElement);
 
     popupClose.addEventListener('click', function () {
-      window.map.removeCard();
+      removeCard();
     });
   }
 
@@ -58,11 +58,20 @@
 
   document.addEventListener('keydown', function (evt) {
     if (window.util.isEscKey(evt)) {
-      window.map.removeCard();
+      removeCard();
     }
   });
 
+  function removeCard() {
+    var card = document.querySelector('.popup');
+    if (card) {
+      document.removeEventListener('keydown', window.util.isEscKey);
+      card.remove();
+    }
+  }
+
   window.card = {
-    renderAdvertCard: renderAdvertCard
+    render: renderAdvertCard,
+    remove: removeCard
   };
 })();

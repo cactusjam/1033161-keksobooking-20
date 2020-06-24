@@ -37,8 +37,8 @@
 
 
   function createAdvert(index) {
-    var yLocation = window.util.getRandomNumber(window.map.mapSize.Y_MIN, window.map.mapSize.Y_MAX);
-    var xLocation = window.util.getRandomNumber(window.map.mapSize.X_MIN, window.map.mapSize.X_MAX);
+    var yLocation = window.util.getRandomNumber(window.map.size.yMin, window.map.size.yMax);
+    var xLocation = window.util.getRandomNumber(window.map.size.xMin, window.map.size.xMax);
     var addressString = xLocation + ', ' + yLocation;
     var advert = {
       'id': (index + 1),
