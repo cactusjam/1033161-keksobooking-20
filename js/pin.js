@@ -29,9 +29,21 @@
     window.util.fragment.appendChild(mapPin);
   }
 
-  var offerList = window.data.createAdverts(ADV_COUNT);
-  offerList.forEach(function (elem) {
-    createPin(elem);
+  // var offerList = window.data.createAdverts(ADV_COUNT);
+  // offerList.forEach(function (elem) {
+  //   createPin(elem);
+  // });
+
+  var offerList = [];
+
+  window.upload.load(function (responseData) {
+    for (var i = 0; i < responseData.length; i++) {
+      responseData[i].id = i + 1;
+      offerList.push(responseData[i]);
+      createPin(responseData[i]);
+    }
+  }, function () {
+    // alert(errorMessage);
   });
 
   document.addEventListener('click', pinClickHandler);
