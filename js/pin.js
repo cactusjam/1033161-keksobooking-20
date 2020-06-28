@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var ADV_COUNT = 8;
 
   var pin = document.querySelector('#pin').content.querySelector('.map__pin');
   var mainPin = document.querySelector('.map__pin--main');
@@ -28,11 +27,6 @@
     pinImage.src = adv.author.avatar;
     window.util.fragment.appendChild(mapPin);
   }
-
-  // var offerList = window.data.createAdverts(ADV_COUNT);
-  // offerList.forEach(function (elem) {
-  //   createPin(elem);
-  // });
 
   var offerList = [];
 
