@@ -13,9 +13,11 @@
   };
 
   function enableForm() {
-    window.map.element.classList.remove('map--faded');
-    window.util.toggleElementsDisabled(mapItems, false);
-    window.map.pinsContainer.appendChild(window.util.fragment);
+    if (window.map.element.classList.contains('map--faded')) {
+      window.pin.uploadData();
+      window.map.element.classList.remove('map--faded');
+      window.util.toggleElementsDisabled(mapItems, false);
+    }
   }
 
   window.map = {

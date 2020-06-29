@@ -30,15 +30,19 @@
 
   var offerList = [];
 
-  window.backend.load(function (responseData) {
-    for (var i = 0; i < responseData.length; i++) {
-      responseData[i].id = i + 1;
-      offerList.push(responseData[i]);
-      createPin(responseData[i]);
-    }
-  }, function () {
-    // alert(errorMessage);
-  });
+  function uploadData() {
+    window.backend.load(function (responseData) {
+      for (var i = 0; i < responseData.length; i++) {
+        responseData[i].id = i + 1;
+        offerList.push(responseData[i]);
+        createPin(responseData[i]);
+      }
+
+      window.map.pinsContainer.appendChild(window.util.fragment);
+    }, function () {
+      // alert(errorMessage);
+    });
+  }
 
   document.addEventListener('click', pinClickHandler);
 
@@ -136,6 +140,7 @@
   }
 
   window.pin = {
-    сoords: getMapPinMainCoords
+    сoords: getMapPinMainCoords,
+    uploadData: uploadData
   };
 })();

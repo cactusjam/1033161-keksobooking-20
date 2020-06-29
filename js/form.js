@@ -53,10 +53,12 @@
   }
 
   function enableForm() {
-    adForm.classList.remove('ad-form--disabled');
-    window.util.toggleElementsDisabled(adFormFieldset, false);
-    addressCoords(window.pin.сoords(true));
-    addFormListener();
+    if (adForm.classList.contains('ad-form--disabled')) {
+      adForm.classList.remove('ad-form--disabled');
+      window.util.toggleElementsDisabled(adFormFieldset, false);
+      addressCoords(window.pin.сoords(true));
+      addFormListener();
+    }
   }
 
   function disableForm() {
@@ -84,6 +86,8 @@
 
   function adFormSubmitClick() {
     checkRoomValidity();
+    evt.preventDefault();
+
   }
 
   timeIn.addEventListener('change', function () {
