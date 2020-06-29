@@ -19,10 +19,10 @@
     cardElement.querySelector('.popup__description').textContent = advertData.offer.description;
     addCardPhotos(cardElement, advertData);
     filterFeatures(cardElement, advertData);
-    window.map.map.insertAdjacentElement('afterbegin', cardElement);
+    window.map.element.insertAdjacentElement('afterbegin', cardElement);
 
     popupClose.addEventListener('click', function () {
-      window.map.removeCard();
+      removeCard();
     });
   }
 
@@ -47,22 +47,35 @@
   function addCardPhotos(cardElement, advertData) {
     var cardsPhotoCollection = cardElement.querySelector('.popup__photos');
     var popupPhoto = cardElement.querySelector('.popup__photo');
-    popupPhoto.src = advertData.offer.photos[0];
+    if (advertData.offer.photos.length) {
+      popupPhoto.src = advertData.offer.photos[0];
 
-    for (var i = 1; i < advertData.offer.photos.length; i++) {
-      var newPhotoImg = popupPhoto.cloneNode(true);
-      newPhotoImg.src = advertData.offer.photos[i];
-      cardsPhotoCollection.appendChild(newPhotoImg);
+      for (var i = 1; i < advertData.offer.photos.length; i++) {
+        var newPhotoImg = popupPhoto.cloneNode(true);
+        newPhotoImg.src = advertData.offer.photos[i];
+        cardsPhotoCollection.appendChild(newPhotoImg);
+      }
+    } else {
+      popupPhoto.remove();
     }
   }
 
   document.addEventListener('keydown', function (evt) {
     if (window.util.isEscKey(evt)) {
-      window.map.removeCard();
+      removeCard();
     }
   });
 
+  function removeCard() {
+    var card = document.querySelector('.popup');
+    if (card) {
+      document.removeEventListener('keydown', window.util.isEscKey);
+      card.remove();
+    }
+  }
+
   window.card = {
-    renderAdvertCard: renderAdvertCard
+    render: renderAdvertCard,
+    remove: removeCard
   };
 })();

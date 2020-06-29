@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var fragment = document.createDocumentFragment();
+
+
   function getRandomArrayLength(array) {
     var newArrayLength = getRandomNumber(1, array.length);
     var newArray = [];
@@ -44,6 +47,7 @@
     getRandomElement: getRandomElement,
     toggleElementsDisabled: toggleElementsDisabled,
     isEscKey: isEscKey,
-    isEnterKey: isEnterKey
+    isEnterKey: isEnterKey,
+    fragment: fragment
   };
 })();
