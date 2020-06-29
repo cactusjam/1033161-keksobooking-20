@@ -30,7 +30,7 @@
 
   var offerList = [];
 
-  window.upload.load(function (responseData) {
+  window.backend.load(function (responseData) {
     for (var i = 0; i < responseData.length; i++) {
       responseData[i].id = i + 1;
       offerList.push(responseData[i]);

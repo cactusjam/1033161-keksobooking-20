@@ -30,7 +30,7 @@
     xhr.send(null);
   }
 
-  window.upload = {
+  window.backend = {
     load: load
   };
 })();
