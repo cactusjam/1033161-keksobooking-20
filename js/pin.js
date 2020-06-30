@@ -44,6 +44,13 @@
     });
   }
 
+  function dellPins() {
+    var pins = document.querySelectorAll('.map__pin');
+    for (var i = 1; i < pins.length; i++) {
+      pins[i].remove();
+    }
+  }
+
   document.addEventListener('click', pinClickHandler);
 
   function pinClickHandler(event) {
@@ -141,6 +148,7 @@
 
   window.pin = {
     сoords: getMapPinMainCoords,
-    uploadData: uploadData
+    uploadData: uploadData,
+    dell: dellPins
   };
 })();

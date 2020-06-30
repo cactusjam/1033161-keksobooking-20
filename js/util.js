@@ -41,6 +41,12 @@
     return evt.key === 'Enter';
   }
 
+  var onDocumentClick = function (element) {
+    document.addEventListener('click', function () {
+      element.remove();
+    });
+  };
+
   window.util = {
     getRandomArrayLength: getRandomArrayLength,
     getRandomNumber: getRandomNumber,
@@ -48,6 +54,7 @@
     toggleElementsDisabled: toggleElementsDisabled,
     isEscKey: isEscKey,
     isEnterKey: isEnterKey,
-    fragment: fragment
+    fragment: fragment,
+    onDocumentClick: onDocumentClick
   };
 })();

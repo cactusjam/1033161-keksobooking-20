@@ -12,20 +12,30 @@
     xMax: 1200
   };
 
-  function enableForm() {
-    if (window.map.element.classList.contains('map--faded')) {
+  function enableMap() {
+    if (map.classList.contains('map--faded')) {
       window.pin.uploadData();
-      window.map.element.classList.remove('map--faded');
+      map.classList.remove('map--faded');
       window.util.toggleElementsDisabled(mapItems, false);
     }
   }
+
+  function disableMap() {
+    if (!map.classList.contains('map--faded')) {
+      map.classList.add('map--faded');
+      window.util.toggleElementsDisabled(mapItems, true);
+      window.pin.dell();
+    }
+  }
+
+  disableMap();
 
   window.map = {
     size: mapSize,
     element: map,
     pinsContainer: pinsContainer,
     filter: mapFilters,
-    enable: enableForm,
-    items: mapItems
+    enable: enableMap,
+    disable: disableMap
   };
 })();

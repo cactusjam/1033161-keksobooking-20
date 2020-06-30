@@ -4,6 +4,8 @@
   var adForm = document.querySelector('.ad-form');
   var adFormFieldset = adForm.querySelectorAll('fieldset');
   var adFormSubmit = adForm.querySelector('.ad-form__submit');
+  var buttonError = adForm.querySelector('.error__button');
+  var main = document.querySelector('main');
   var adFormAddress = adForm.querySelector('#address');
   var adFormRooms = adForm.querySelector('#room_number');
   var adFormGuests = adForm.querySelector('#capacity');
@@ -62,12 +64,14 @@
   }
 
   function disableForm() {
-    window.util.toggleElementsDisabled(adFormFieldset, true);
-    window.util.toggleElementsDisabled(window.map.items, true);
-    addressCoords(window.pin.сoords(false));
-    removeFormListener();
+    if (!adForm.classList.contains('ad-form--disabled')) {
+      adForm.classList.add('ad-form--disabled');
+      window.util.toggleElementsDisabled(adFormFieldset, true);
+      addressCoords(window.pin.сoords(false));
+      removeFormListener();
+      adForm.reset();
+    }
   }
-
   disableForm();
 
   function checkRoomValidity() {
@@ -86,9 +90,49 @@
 
   function adFormSubmitClick() {
     checkRoomValidity();
-    evt.preventDefault();
-
   }
+
+  function onDocumentKeydown(element) {
+    document.addEventListener('keydown', function (evt) {
+      if (window.util.isEscKey(evt)) {
+        element.remove();
+      }
+    });
+  }
+
+  function createSuccessfulSubmitForm() {
+    var successfulForm = document.querySelector('#success')
+      .content
+      .querySelector('.success');
+
+    var successMessage = successfulForm.cloneNode(true);
+    main.appendChild(successMessage);
+    window.util.onDocumentClick(successMessage);
+    onDocumentKeydown(successMessage);
+  }
+
+  function createErrorSubmitForm() {
+    var errorForm = document.querySelector('#error')
+      .content
+      .querySelector('.error');
+
+    var errorMessage = errorForm.cloneNode(true);
+    main.appendChild(errorMessage);
+
+    window.util.onDocumentClick(errorMessage);
+    onDocumentKeydown(errorMessage);
+  }
+
+  adForm.addEventListener('submit', function (evt) {
+    window.backend.upload(new FormData(adForm), function () {
+      createSuccessfulSubmitForm();
+      disableForm();
+      window.map.disable();
+    }, function () {
+      createErrorSubmitForm();
+    });
+    evt.preventDefault();
+  });
 
   timeIn.addEventListener('change', function () {
     timeOut.value = timeIn.value;
