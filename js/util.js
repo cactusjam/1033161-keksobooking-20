@@ -47,6 +47,14 @@
     });
   };
 
+  function onDocumentKeydown(element) {
+    document.addEventListener('keydown', function (evt) {
+      if (window.util.isEscKey(evt)) {
+        element.remove();
+      }
+    });
+  }
+
   window.util = {
     getRandomArrayLength: getRandomArrayLength,
     getRandomNumber: getRandomNumber,
@@ -55,6 +63,7 @@
     isEscKey: isEscKey,
     isEnterKey: isEnterKey,
     fragment: fragment,
-    onDocumentClick: onDocumentClick
+    onDocumentClick: onDocumentClick,
+    onDocumentKeydown: onDocumentKeydown
   };
 })();

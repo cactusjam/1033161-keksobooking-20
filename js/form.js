@@ -92,14 +92,6 @@
     checkRoomValidity();
   }
 
-  function onDocumentKeydown(element) {
-    document.addEventListener('keydown', function (evt) {
-      if (window.util.isEscKey(evt)) {
-        element.remove();
-      }
-    });
-  }
-
   function createSuccessfulSubmitForm() {
     var successfulForm = document.querySelector('#success')
       .content
@@ -108,7 +100,7 @@
     var successMessage = successfulForm.cloneNode(true);
     main.appendChild(successMessage);
     window.util.onDocumentClick(successMessage);
-    onDocumentKeydown(successMessage);
+    window.util.onDocumentKeydown(successMessage);
   }
 
   function createErrorSubmitForm() {
@@ -120,7 +112,7 @@
     main.appendChild(errorMessage);
 
     window.util.onDocumentClick(errorMessage);
-    onDocumentKeydown(errorMessage);
+    window.util.onDocumentKeydown(errorMessage);
   }
 
   adForm.addEventListener('submit', function (evt) {
