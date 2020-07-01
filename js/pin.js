@@ -14,7 +14,9 @@
     WIDTH: mainPin.offsetWidth,
     HEIGHT: 65,
     POINTER: 22,
-    TOTAL_HEIGHT: 84
+    TOTAL_HEIGHT: 84,
+    START_LEFT: 570,
+    START_TOP: 375
   };
 
   function createPin(adv) {
@@ -30,15 +32,26 @@
 
   var offerList = [];
 
-  window.upload.load(function (responseData) {
-    for (var i = 0; i < responseData.length; i++) {
-      responseData[i].id = i + 1;
-      offerList.push(responseData[i]);
-      createPin(responseData[i]);
+  function uploadData() {
+    window.backend.load(function (responseData) {
+      for (var i = 0; i < responseData.length; i++) {
+        responseData[i].id = i + 1;
+        offerList.push(responseData[i]);
+        createPin(responseData[i]);
+      }
+
+      window.map.pinsContainer.appendChild(window.util.fragment);
+    }, function () {
+      // alert(errorMessage);
+    });
+  }
+
+  function removePins() {
+    var pins = document.querySelectorAll('.map__pin');
+    for (var i = 1; i < pins.length; i++) {
+      pins[i].remove();
     }
-  }, function () {
-    // alert(errorMessage);
-  });
+  }
 
   document.addEventListener('click', pinClickHandler);
 
@@ -62,12 +75,18 @@
     }
   }
 
+  function centerTheMainPin() {
+    mainPin.style.left = mapPinMain.START_LEFT + 'px';
+    mainPin.style.top = mapPinMain.START_TOP + 'px';
+  }
+
   mainPin.addEventListener('mousedown', function (evt) {
     if (evt.which === 1) {
       var startCoords = {
         x: evt.clientX,
         y: evt.clientY
       };
+
       window.form.enable();
       window.map.enable();
 
@@ -136,6 +155,10 @@
   }
 
   window.pin = {
-    сoords: getMapPinMainCoords
+    сoords: getMapPinMainCoords,
+    uploadData: uploadData,
+    remove: removePins,
+    mainPin: mainPin,
+    centerTheMainPin: centerTheMainPin
   };
 })();

@@ -41,6 +41,20 @@
     return evt.key === 'Enter';
   }
 
+  var onDocumentClick = function (element) {
+    document.addEventListener('click', function () {
+      element.remove();
+    });
+  };
+
+  function onDocumentKeydown(element) {
+    document.addEventListener('keydown', function (evt) {
+      if (window.util.isEscKey(evt)) {
+        element.remove();
+      }
+    });
+  }
+
   window.util = {
     getRandomArrayLength: getRandomArrayLength,
     getRandomNumber: getRandomNumber,
@@ -48,6 +62,8 @@
     toggleElementsDisabled: toggleElementsDisabled,
     isEscKey: isEscKey,
     isEnterKey: isEnterKey,
-    fragment: fragment
+    fragment: fragment,
+    onDocumentClick: onDocumentClick,
+    onDocumentKeydown: onDocumentKeydown
   };
 })();

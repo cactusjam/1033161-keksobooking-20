@@ -4,6 +4,8 @@
   var adForm = document.querySelector('.ad-form');
   var adFormFieldset = adForm.querySelectorAll('fieldset');
   var adFormSubmit = adForm.querySelector('.ad-form__submit');
+  var buttonReset = adForm.querySelector('.ad-form__reset');
+  var main = document.querySelector('main');
   var adFormAddress = adForm.querySelector('#address');
   var adFormRooms = adForm.querySelector('#room_number');
   var adFormGuests = adForm.querySelector('#capacity');
@@ -53,19 +55,22 @@
   }
 
   function enableForm() {
-    adForm.classList.remove('ad-form--disabled');
-    window.util.toggleElementsDisabled(adFormFieldset, false);
-    addressCoords(window.pin.сoords(true));
-    addFormListener();
+    if (adForm.classList.contains('ad-form--disabled')) {
+      adForm.classList.remove('ad-form--disabled');
+      window.util.toggleElementsDisabled(adFormFieldset, false);
+      addressCoords(window.pin.сoords(true));
+      addFormListener();
+    }
   }
 
   function disableForm() {
-    window.util.toggleElementsDisabled(adFormFieldset, true);
-    window.util.toggleElementsDisabled(window.map.items, true);
-    addressCoords(window.pin.сoords(false));
-    removeFormListener();
+    if (!adForm.classList.contains('ad-form--disabled')) {
+      adForm.classList.add('ad-form--disabled');
+      window.util.toggleElementsDisabled(adFormFieldset, true);
+      removeFormListener();
+      adForm.reset();
+    }
   }
-
   disableForm();
 
   function checkRoomValidity() {
@@ -85,6 +90,48 @@
   function adFormSubmitClick() {
     checkRoomValidity();
   }
+
+  function createSuccessfulSubmitForm() {
+    var successfulForm = document.querySelector('#success')
+      .content
+      .querySelector('.success');
+
+    var successMessage = successfulForm.cloneNode(true);
+    main.appendChild(successMessage);
+    window.util.onDocumentClick(successMessage);
+    window.util.onDocumentKeydown(successMessage);
+  }
+
+  function createErrorSubmitForm() {
+    var errorForm = document.querySelector('#error')
+      .content
+      .querySelector('.error');
+
+    var errorMessage = errorForm.cloneNode(true);
+    main.appendChild(errorMessage);
+
+    window.util.onDocumentClick(errorMessage);
+    window.util.onDocumentKeydown(errorMessage);
+  }
+
+  adForm.addEventListener('submit', function (evt) {
+    window.backend.upload(new FormData(adForm), function () {
+      createSuccessfulSubmitForm();
+      disableForm();
+      window.map.disable();
+    }, function () {
+      createErrorSubmitForm();
+    });
+    evt.preventDefault();
+  });
+
+  buttonReset.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+    if (evt.which === 1) {
+      disableForm();
+      window.map.disable();
+    }
+  });
 
   timeIn.addEventListener('change', function () {
     timeOut.value = timeIn.value;
