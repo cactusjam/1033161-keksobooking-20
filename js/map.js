@@ -24,7 +24,8 @@
     if (!map.classList.contains('map--faded')) {
       map.classList.add('map--faded');
       window.util.toggleElementsDisabled(mapItems, true);
-      window.pin.dell();
+      window.pin.remove();
+      window.pin.centerTheMainPin();
     }
   }
 

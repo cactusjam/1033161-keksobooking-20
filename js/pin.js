@@ -14,7 +14,9 @@
     WIDTH: mainPin.offsetWidth,
     HEIGHT: 65,
     POINTER: 22,
-    TOTAL_HEIGHT: 84
+    TOTAL_HEIGHT: 84,
+    START_LEFT: 570,
+    START_TOP: 375
   };
 
   function createPin(adv) {
@@ -44,7 +46,7 @@
     });
   }
 
-  function dellPins() {
+  function removePins() {
     var pins = document.querySelectorAll('.map__pin');
     for (var i = 1; i < pins.length; i++) {
       pins[i].remove();
@@ -73,12 +75,18 @@
     }
   }
 
+  function centerTheMainPin() {
+    mainPin.style.left = mapPinMain.START_LEFT + 'px';
+    mainPin.style.top = mapPinMain.START_TOP + 'px';
+  }
+
   mainPin.addEventListener('mousedown', function (evt) {
     if (evt.which === 1) {
       var startCoords = {
         x: evt.clientX,
         y: evt.clientY
       };
+
       window.form.enable();
       window.map.enable();
 
@@ -149,6 +157,8 @@
   window.pin = {
     сoords: getMapPinMainCoords,
     uploadData: uploadData,
-    dell: dellPins
+    remove: removePins,
+    mainPin: mainPin,
+    centerTheMainPin: centerTheMainPin
   };
 })();

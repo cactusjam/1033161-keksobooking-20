@@ -4,7 +4,7 @@
   var adForm = document.querySelector('.ad-form');
   var adFormFieldset = adForm.querySelectorAll('fieldset');
   var adFormSubmit = adForm.querySelector('.ad-form__submit');
-  var buttonError = adForm.querySelector('.error__button');
+  var buttonReset = adForm.querySelector('.ad-form__reset');
   var main = document.querySelector('main');
   var adFormAddress = adForm.querySelector('#address');
   var adFormRooms = adForm.querySelector('#room_number');
@@ -67,7 +67,6 @@
     if (!adForm.classList.contains('ad-form--disabled')) {
       adForm.classList.add('ad-form--disabled');
       window.util.toggleElementsDisabled(adFormFieldset, true);
-      addressCoords(window.pin.сoords(false));
       removeFormListener();
       adForm.reset();
     }
@@ -124,6 +123,14 @@
       createErrorSubmitForm();
     });
     evt.preventDefault();
+  });
+
+  buttonReset.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+    if (evt.which === 1) {
+      disableForm();
+      window.map.disable();
+    }
   });
 
   timeIn.addEventListener('change', function () {
