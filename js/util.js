@@ -39,13 +39,13 @@
     return evt.key === 'Enter';
   }
 
-  var onDocumentClick = function (element) {
+  var setRemoveOnclick = function (element) {
     document.addEventListener('click', function () {
       element.remove();
     });
   };
 
-  function onDocumentKeydown(element) {
+  function setCloseOnEsc(element) {
     document.addEventListener('keydown', function (evt) {
       if (window.util.isEscKey(evt)) {
         element.remove();
@@ -60,7 +60,7 @@
     toggleElementsDisabled: toggleElementsDisabled,
     isEscKey: isEscKey,
     isEnterKey: isEnterKey,
-    onDocumentClick: onDocumentClick,
-    onDocumentKeydown: onDocumentKeydown
+    onDocumentClick: setRemoveOnclick,
+    onDocumentKeydown: setCloseOnEsc
   };
 })();
