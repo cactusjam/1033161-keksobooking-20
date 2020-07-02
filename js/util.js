@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var fragment = document.createDocumentFragment();
-
 
   function getRandomArrayLength(array) {
     var newArrayLength = getRandomNumber(1, array.length);
@@ -62,7 +60,6 @@
     toggleElementsDisabled: toggleElementsDisabled,
     isEscKey: isEscKey,
     isEnterKey: isEnterKey,
-    fragment: fragment,
     onDocumentClick: onDocumentClick,
     onDocumentKeydown: onDocumentKeydown
   };

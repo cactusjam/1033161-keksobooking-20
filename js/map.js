@@ -12,9 +12,14 @@
     xMax: 1200
   };
 
+  function onDataLoad(responseData) {
+    var pinsMarkup = window.pin.renderList(responseData);
+    pinsContainer.appendChild(pinsMarkup);
+  }
+
   function enableMap() {
     if (map.classList.contains('map--faded')) {
-      window.pin.uploadData();
+      window.backend.load(onDataLoad);
       map.classList.remove('map--faded');
       window.util.toggleElementsDisabled(mapItems, false);
     }
@@ -34,7 +39,6 @@
   window.map = {
     size: mapSize,
     element: map,
-    pinsContainer: pinsContainer,
     filter: mapFilters,
     enable: enableMap,
     disable: disableMap

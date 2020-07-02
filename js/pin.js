@@ -27,23 +27,19 @@
     mapPin.style.top = adv.location.y - pinSize.HEIGHT + 'px';
     pinImage.alt = adv.offer.title;
     pinImage.src = adv.author.avatar;
-    window.util.fragment.appendChild(mapPin);
+    return mapPin;
   }
 
   var offerList = [];
 
-  function uploadData() {
-    window.backend.load(function (responseData) {
-      for (var i = 0; i < responseData.length; i++) {
-        responseData[i].id = i + 1;
-        offerList.push(responseData[i]);
-        createPin(responseData[i]);
-      }
-
-      window.map.pinsContainer.appendChild(window.util.fragment);
-    }, function () {
-      // alert(errorMessage);
-    });
+  function renderPins(offers) {
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < offers.length; i++) {
+      offers[i].id = i + 1;
+      offerList.push(offers[i]);
+      var createdPin = createPin(offers[i]);
+      fragment.appendChild(createdPin);
+    }
   }
 
   function removePins() {
@@ -156,9 +152,9 @@
 
   window.pin = {
     сoords: getMapPinMainCoords,
-    uploadData: uploadData,
     remove: removePins,
     mainPin: mainPin,
+    renderList: renderPins,
     centerTheMainPin: centerTheMainPin
   };
 })();

@@ -13,6 +13,13 @@
   var rentPrice = adForm.querySelector('#price');
   var timeIn = adForm.querySelector('#timein');
   var timeOut = adForm.querySelector('#timeout');
+  var successfulPopupTemplate = document.querySelector('#success')
+  .content
+  .querySelector('.success');
+  var errorPopupTemplate = document.querySelector('#error')
+  .content
+  .querySelector('.error');
+
 
   var placeType = {
     flat: {
@@ -64,6 +71,7 @@
   }
 
   function disableForm() {
+    addressCoords(window.pin.сoords(false));
     if (!adForm.classList.contains('ad-form--disabled')) {
       adForm.classList.add('ad-form--disabled');
       window.util.toggleElementsDisabled(adFormFieldset, true);
@@ -92,36 +100,32 @@
   }
 
   function createSuccessfulSubmitForm() {
-    var successfulForm = document.querySelector('#success')
-      .content
-      .querySelector('.success');
-
-    var successMessage = successfulForm.cloneNode(true);
+    var successMessage = successfulPopupTemplate.cloneNode(true);
     main.appendChild(successMessage);
     window.util.onDocumentClick(successMessage);
     window.util.onDocumentKeydown(successMessage);
   }
 
   function createErrorSubmitForm() {
-    var errorForm = document.querySelector('#error')
-      .content
-      .querySelector('.error');
-
-    var errorMessage = errorForm.cloneNode(true);
+    var errorMessage = errorPopupTemplate.cloneNode(true);
     main.appendChild(errorMessage);
 
     window.util.onDocumentClick(errorMessage);
     window.util.onDocumentKeydown(errorMessage);
   }
 
+  function onFormSendSuccess() {
+    createSuccessfulSubmitForm();
+    disableForm();
+    window.map.disable();
+  }
+
   adForm.addEventListener('submit', function (evt) {
-    window.backend.upload(new FormData(adForm), function () {
-      createSuccessfulSubmitForm();
-      disableForm();
-      window.map.disable();
-    }, function () {
-      createErrorSubmitForm();
-    });
+    window.backend.upload(
+        new FormData(adForm),
+        onFormSendSuccess,
+        createErrorSubmitForm
+    );
     evt.preventDefault();
   });
 
