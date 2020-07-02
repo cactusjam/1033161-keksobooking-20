@@ -40,6 +40,7 @@
       var createdPin = createPin(offers[i]);
       fragment.appendChild(createdPin);
     }
+    return fragment;
   }
 
   function removePins() {
