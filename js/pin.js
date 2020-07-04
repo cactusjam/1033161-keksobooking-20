@@ -4,6 +4,7 @@
 
   var pin = document.querySelector('#pin').content.querySelector('.map__pin');
   var mainPin = document.querySelector('.map__pin--main');
+  var MAX_RENDERED_PINS_COUNT = 5;
 
   var pinSize = {
     HEIGHT: 70,
@@ -32,13 +33,27 @@
 
   var offerList = [];
 
-  function renderPins(offers) {
+  function initRenderPins(offers) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < offers.length; i++) {
       offers[i].id = i + 1;
       offerList.push(offers[i]);
-      var createdPin = createPin(offers[i]);
-      fragment.appendChild(createdPin);
+
+      if (i + 1 <= MAX_RENDERED_PINS_COUNT) {
+        var createdPin = createPin(offers[i]);
+        fragment.appendChild(createdPin);
+      }
+    }
+    return fragment;
+  }
+
+  function renderPins(offers) {
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < offers.length; i++) {
+      if (i + 1 <= MAX_RENDERED_PINS_COUNT) {
+        var createdPin = createPin(offers[i]);
+        fragment.appendChild(createdPin);
+      }
     }
     return fragment;
   }
@@ -156,6 +171,7 @@
     remove: removePins,
     mainPin: mainPin,
     renderList: renderPins,
+    initRenderList: initRenderPins,
     centerTheMainPin: centerTheMainPin
   };
 })();

@@ -2,8 +2,8 @@
 (function () {
   var map = document.querySelector('.map');
   var pinsContainer = document.querySelector('.map__pins');
-  var mapFilters = document.querySelector('.map__filters');
   var mapItems = document.querySelectorAll('select, fieldset');
+  var makeFilterActive = window.filter.activate;
 
   var mapSize = {
     yMin: 130,
@@ -13,7 +13,8 @@
   };
 
   function onDataLoad(responseData) {
-    var pinsMarkup = window.pin.renderList(responseData);
+    makeFilterActive(responseData);
+    var pinsMarkup = window.pin.initRenderList(responseData);
     pinsContainer.appendChild(pinsMarkup);
   }
 
@@ -36,11 +37,13 @@
 
   disableMap();
 
+
   window.map = {
     size: mapSize,
     element: map,
-    filter: mapFilters,
     enable: enableMap,
-    disable: disableMap
+    disable: disableMap,
+    onDataLoad: onDataLoad,
+    pinsContainer: pinsContainer
   };
 })();

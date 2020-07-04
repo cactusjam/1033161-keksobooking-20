@@ -14,12 +14,11 @@
   var timeIn = adForm.querySelector('#timein');
   var timeOut = adForm.querySelector('#timeout');
   var successfulPopupTemplate = document.querySelector('#success')
-  .content
-  .querySelector('.success');
+    .content
+    .querySelector('.success');
   var errorPopupTemplate = document.querySelector('#error')
-  .content
-  .querySelector('.error');
-
+    .content
+    .querySelector('.error');
 
   var placeType = {
     flat: {

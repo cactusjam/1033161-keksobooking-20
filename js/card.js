@@ -76,6 +76,7 @@
 
   window.card = {
     render: renderAdvertCard,
-    remove: removeCard
+    remove: removeCard,
+    filterFeatures: filterFeatures
   };
 })();
