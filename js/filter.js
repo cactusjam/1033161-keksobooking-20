@@ -5,54 +5,42 @@
   var filterFieldsets = filterForm.querySelectorAll('fieldset');
   var typeOfHouse = document.querySelector('#housing-type');
   var adverts = [];
-  var map = document.querySelector('.map');
 
-  function getAds(ads) {
-    adverts = ads;
+  function getAdvs(advs) {
+    adverts = advs;
   }
 
-  function removeAd() {
-    var adElement = map.querySelector('.map__card');
-    if (adElement) {
-      adElement.remove();
-    }
-  }
-
-  function onChange() {
-    removeAd();
-  }
-
-  function onHousingTypeChange(evt) {
+  function onFilteringHouseType(evt) {
     var selectedType = evt.target.value;
-    var filteredAds = adverts;
+    var filteredAdvs = adverts;
     if (selectedType !== 'any') {
-      filteredAds = adverts.filter(function (ad) {
-        return ad.offer.type === selectedType;
+      filteredAdvs = adverts.filter(function (adv) {
+        return adv.offer.type === selectedType;
       });
     }
     window.pin.remove();
 
-    var pinsMarkup = window.pin.renderList(filteredAds);
+    var pinsMarkup = window.pin.renderList(filteredAdvs);
     window.map.pinsContainer.appendChild(pinsMarkup);
   }
 
-  function makeFilterFormActive(ads) {
+  function makeFilterFormActive(advs) {
     window.util.toggleElementsDisabled(filterSelects, false);
     window.util.toggleElementsDisabled(filterFieldsets, false);
-    getAds(ads);
+    getAdvs(advs);
 
-    typeOfHouse.addEventListener('change', onHousingTypeChange);
-    filterForm.addEventListener('change', onChange);
-  };
+    typeOfHouse.addEventListener('change', onFilteringHouseType);
+    filterForm.addEventListener('change', window.card.remove);
+  }
 
   function makeFilterFormInactive() {
     filterForm.reset();
     window.util.toggleElementsDisabled(filterSelects, true);
     window.util.toggleElementsDisabled(filterFieldsets, true);
 
-    typeOfHouse.removeEventListener('change', onHousingTypeChange);
-    filterForm.removeEventListener('change', onChange);
-  };
+    typeOfHouse.removeEventListener('change', onFilteringHouseType);
+    filterForm.removeEventListener('change', window.card.remove);
+  }
 
   window.filter = {
     activate: makeFilterFormActive,
