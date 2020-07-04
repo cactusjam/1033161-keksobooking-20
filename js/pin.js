@@ -4,6 +4,7 @@
 
   var pin = document.querySelector('#pin').content.querySelector('.map__pin');
   var mainPin = document.querySelector('.map__pin--main');
+  var MAX_RENDERED_PINS_COUNT = 5;
 
   var pinSize = {
     HEIGHT: 70,
@@ -27,23 +28,34 @@
     mapPin.style.top = adv.location.y - pinSize.HEIGHT + 'px';
     pinImage.alt = adv.offer.title;
     pinImage.src = adv.author.avatar;
-    window.util.fragment.appendChild(mapPin);
+    return mapPin;
   }
 
   var offerList = [];
 
-  function uploadData() {
-    window.backend.load(function (responseData) {
-      for (var i = 0; i < responseData.length; i++) {
-        responseData[i].id = i + 1;
-        offerList.push(responseData[i]);
-        createPin(responseData[i]);
-      }
+  function initRenderPins(offers) {
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < offers.length; i++) {
+      offers[i].id = i + 1;
+      offerList.push(offers[i]);
 
-      window.map.pinsContainer.appendChild(window.util.fragment);
-    }, function () {
-      // alert(errorMessage);
-    });
+      if (i + 1 <= MAX_RENDERED_PINS_COUNT) {
+        var createdPin = createPin(offers[i]);
+        fragment.appendChild(createdPin);
+      }
+    }
+    return fragment;
+  }
+
+  function renderPins(offers) {
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < offers.length; i++) {
+      if (i + 1 <= MAX_RENDERED_PINS_COUNT) {
+        var createdPin = createPin(offers[i]);
+        fragment.appendChild(createdPin);
+      }
+    }
+    return fragment;
   }
 
   function removePins() {
@@ -156,9 +168,10 @@
 
   window.pin = {
     сoords: getMapPinMainCoords,
-    uploadData: uploadData,
     remove: removePins,
     mainPin: mainPin,
+    renderList: renderPins,
+    initRenderList: initRenderPins,
     centerTheMainPin: centerTheMainPin
   };
 })();

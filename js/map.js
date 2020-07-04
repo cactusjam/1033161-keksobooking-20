@@ -2,8 +2,8 @@
 (function () {
   var map = document.querySelector('.map');
   var pinsContainer = document.querySelector('.map__pins');
-  var mapFilters = document.querySelector('.map__filters');
   var mapItems = document.querySelectorAll('select, fieldset');
+  var makeFilterActive = window.filter.activate;
 
   var mapSize = {
     yMin: 130,
@@ -12,9 +12,15 @@
     xMax: 1200
   };
 
+  function onDataLoad(responseData) {
+    makeFilterActive(responseData);
+    var pinsMarkup = window.pin.initRenderList(responseData);
+    pinsContainer.appendChild(pinsMarkup);
+  }
+
   function enableMap() {
     if (map.classList.contains('map--faded')) {
-      window.pin.uploadData();
+      window.backend.load(onDataLoad);
       map.classList.remove('map--faded');
       window.util.toggleElementsDisabled(mapItems, false);
     }
@@ -31,12 +37,13 @@
 
   disableMap();
 
+
   window.map = {
     size: mapSize,
     element: map,
-    pinsContainer: pinsContainer,
-    filter: mapFilters,
     enable: enableMap,
-    disable: disableMap
+    disable: disableMap,
+    onDataLoad: onDataLoad,
+    pinsContainer: pinsContainer
   };
 })();

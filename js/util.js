@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var fragment = document.createDocumentFragment();
-
 
   function getRandomArrayLength(array) {
     var newArrayLength = getRandomNumber(1, array.length);
@@ -41,13 +39,13 @@
     return evt.key === 'Enter';
   }
 
-  var onDocumentClick = function (element) {
+  var setRemoveOnclick = function (element) {
     document.addEventListener('click', function () {
       element.remove();
     });
   };
 
-  function onDocumentKeydown(element) {
+  function setCloseOnEsc(element) {
     document.addEventListener('keydown', function (evt) {
       if (window.util.isEscKey(evt)) {
         element.remove();
@@ -62,8 +60,7 @@
     toggleElementsDisabled: toggleElementsDisabled,
     isEscKey: isEscKey,
     isEnterKey: isEnterKey,
-    fragment: fragment,
-    onDocumentClick: onDocumentClick,
-    onDocumentKeydown: onDocumentKeydown
+    onDocumentClick: setRemoveOnclick,
+    onDocumentKeydown: setCloseOnEsc
   };
 })();
