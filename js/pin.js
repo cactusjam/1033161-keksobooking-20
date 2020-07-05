@@ -31,26 +31,10 @@
     return mapPin;
   }
 
-  var offerList = [];
-
-  function initRenderPins(offers) {
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < offers.length; i++) {
-      offers[i].id = i + 1;
-      offerList.push(offers[i]);
-
-      if (i + 1 <= MAX_RENDERED_PINS_COUNT) {
-        var createdPin = createPin(offers[i]);
-        fragment.appendChild(createdPin);
-      }
-    }
-    return fragment;
-  }
-
   function renderPins(offers) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < offers.length; i++) {
-      if (i + 1 <= MAX_RENDERED_PINS_COUNT) {
+    for (var i = 0; i < MAX_RENDERED_PINS_COUNT; i++) {
+      if (offers[i]) {
         var createdPin = createPin(offers[i]);
         fragment.appendChild(createdPin);
       }
@@ -79,7 +63,7 @@
       id = closestPin.dataset.id;
     }
     if (id) {
-      var targetAdv = offerList.find(function (adv) {
+      var targetAdv = window.map.offers.find(function (adv) {
         return adv.id === Number(id);
       });
       window.card.remove();
@@ -171,7 +155,6 @@
     remove: removePins,
     mainPin: mainPin,
     renderList: renderPins,
-    initRenderList: initRenderPins,
     centerTheMainPin: centerTheMainPin
   };
 })();

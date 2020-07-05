@@ -1,49 +1,31 @@
 'use strict';
 (function () {
-  var filterForm = document.querySelector('.map__filters');
-  var filterSelects = filterForm.querySelectorAll('select');
-  var filterFieldsets = filterForm.querySelectorAll('fieldset');
   var typeOfHouse = document.querySelector('#housing-type');
-  var adverts = [];
 
-  function getAdvs(advs) {
-    adverts = advs;
-  }
-
-  function onFilteringHouseType(evt) {
-    var selectedType = evt.target.value;
-    var filteredAdvs = adverts;
+  function filterOffers(adverts) {
+    var filteredAdvs = [];
+    var selectedType = typeOfHouse.value;
     if (selectedType !== 'any') {
       filteredAdvs = adverts.filter(function (adv) {
         return adv.offer.type === selectedType;
       });
+    } else {
+      filteredAdvs = adverts;
     }
+    return filteredAdvs;
+  }
+
+  function onFilterChange() {
     window.pin.remove();
-
-    var pinsMarkup = window.pin.renderList(filteredAdvs);
-    window.map.pinsContainer.appendChild(pinsMarkup);
+    window.card.remove();
+    var filteredAdvs = filterOffers(window.map.offers);
+    window.map.updatePins(filteredAdvs);
   }
 
-  function makeFilterFormActive(advs) {
-    window.util.toggleElementsDisabled(filterSelects, false);
-    window.util.toggleElementsDisabled(filterFieldsets, false);
-    getAdvs(advs);
-
-    typeOfHouse.addEventListener('change', onFilteringHouseType);
-    filterForm.addEventListener('change', window.card.remove);
-  }
-
-  function makeFilterFormInactive() {
-    filterForm.reset();
-    window.util.toggleElementsDisabled(filterSelects, true);
-    window.util.toggleElementsDisabled(filterFieldsets, true);
-
-    typeOfHouse.removeEventListener('change', onFilteringHouseType);
-    filterForm.removeEventListener('change', window.card.remove);
-  }
+  typeOfHouse.addEventListener('change', onFilterChange);
 
   window.filter = {
-    activate: makeFilterFormActive,
-    deactivate: makeFilterFormInactive
+    run: filterOffers,
+    change: onFilterChange
   };
 })();

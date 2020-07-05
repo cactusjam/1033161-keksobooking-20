@@ -13,7 +13,7 @@
   var rentPrice = adForm.querySelector('#price');
   var timeIn = adForm.querySelector('#timein');
   var timeOut = adForm.querySelector('#timeout');
-  var successfulPopupTemplate = document.querySelector('#success')
+  var successPopupTemplate = document.querySelector('#success')
     .content
     .querySelector('.success');
   var errorPopupTemplate = document.querySelector('#error')
@@ -70,13 +70,11 @@
   }
 
   function disableForm() {
+    adForm.classList.add('ad-form--disabled');
+    window.util.toggleElementsDisabled(adFormFieldset, true);
+    removeFormListener();
+    adForm.reset();
     addressCoords(window.pin.сoords(false));
-    if (!adForm.classList.contains('ad-form--disabled')) {
-      adForm.classList.add('ad-form--disabled');
-      window.util.toggleElementsDisabled(adFormFieldset, true);
-      removeFormListener();
-      adForm.reset();
-    }
   }
   disableForm();
 
@@ -98,23 +96,23 @@
     checkRoomValidity();
   }
 
-  function createSuccessfulSubmitForm() {
-    var successMessage = successfulPopupTemplate.cloneNode(true);
-    main.appendChild(successMessage);
-    window.util.onDocumentClick(successMessage);
-    window.util.onDocumentKeydown(successMessage);
+  function createSuccessfulMessage() {
+    var successMessagePopup = successPopupTemplate.cloneNode(true);
+    main.appendChild(successMessagePopup);
+    window.util.setRemoveOnclick(successMessagePopup);
+    window.util.setCloseOnEsc(successMessagePopup);
   }
 
-  function createErrorSubmitForm() {
+  function createErrorMessage() {
     var errorMessage = errorPopupTemplate.cloneNode(true);
     main.appendChild(errorMessage);
 
-    window.util.onDocumentClick(errorMessage);
-    window.util.onDocumentKeydown(errorMessage);
+    window.util.setRemoveOnclick(errorMessage);
+    window.util.setCloseOnEsc(errorMessage);
   }
 
   function onFormSendSuccess() {
-    createSuccessfulSubmitForm();
+    createSuccessfulMessage();
     disableForm();
     window.map.disable();
   }
@@ -123,7 +121,7 @@
     window.backend.upload(
         new FormData(adForm),
         onFormSendSuccess,
-        createErrorSubmitForm
+        createErrorMessage
     );
     evt.preventDefault();
   });
