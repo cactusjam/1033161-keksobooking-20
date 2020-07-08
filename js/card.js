@@ -18,7 +18,7 @@
     cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + advertData.offer.checkin + ', выезд до ' + advertData.offer.checkout;
     cardElement.querySelector('.popup__description').textContent = advertData.offer.description;
     addCardPhotos(cardElement, advertData);
-    filterFeatures(cardElement, advertData);
+    addCardFeatures(cardElement, advertData);
     window.map.element.insertAdjacentElement('afterbegin', cardElement);
 
     popupClose.addEventListener('click', function () {
@@ -26,7 +26,7 @@
     });
   }
 
-  function filterFeatures(cardElement, advertData) {
+  function addCardFeatures(cardElement, advertData) {
     var popupFeatures = cardElement.querySelector('.popup__features');
     var featuresFragment = document.createDocumentFragment();
 
@@ -76,7 +76,6 @@
 
   window.card = {
     render: renderAdvertCard,
-    remove: removeCard,
-    filterFeatures: filterFeatures
+    remove: removeCard
   };
 })();

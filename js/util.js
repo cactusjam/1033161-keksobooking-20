@@ -60,7 +60,7 @@
     toggleElementsDisabled: toggleElementsDisabled,
     isEscKey: isEscKey,
     isEnterKey: isEnterKey,
-    onDocumentClick: setRemoveOnclick,
-    onDocumentKeydown: setCloseOnEsc
+    setRemoveOnclick: setRemoveOnclick,
+    setCloseOnEsc: setCloseOnEsc
   };
 })();
