@@ -1,10 +1,10 @@
 'use strict';
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-  var DEFAULT_AVATAR = avatarPreview.src;
 
   var avatarChooser = document.querySelector('#avatar');
   var avatarPreview = document.querySelector('.ad-form-header__preview img');
+  var defaultAvatar = avatarPreview.src;
   var imageChooser = document.querySelector('#images');
   var imagePreview = document.querySelector('.ad-form__photo');
 
@@ -54,7 +54,7 @@
   var disableImgLoader = function () {
     imageChooser.removeEventListener('change', loadPhoto);
     avatarChooser.removeEventListener('change', loadAvatar);
-    avatarPreview.src = DEFAULT_AVATAR;
+    avatarPreview.src = defaultAvatar;
     imagePreview.innerHTML = '';
   };
 

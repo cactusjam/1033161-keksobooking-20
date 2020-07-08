@@ -9,16 +9,36 @@
   function renderAdvertCard(advertData) {
     var cardElement = cardTemplate.cloneNode(true);
     var popupClose = cardElement.querySelector('.popup__close');
+    var cardPrice = cardElement.querySelector('.popup__text--price');
+    var cardTime = cardElement.querySelector('.popup__text--time');
+    var cardDescription = cardElement.querySelector('.popup__description');
     cardElement.querySelector('.popup__avatar').src = advertData.author.avatar;
     cardElement.querySelector('.popup__title').textContent = advertData.offer.title;
     cardElement.querySelector('.popup__text--address').textContent = advertData.offer.address;
-    cardElement.querySelector('.popup__text--price').textContent = advertData.offer.price + ' ₽/ночь';
     cardElement.querySelector('.popup__type').textContent = window.form.placeType[advertData.offer.type].label;
     cardElement.querySelector('.popup__text--capacity').textContent = advertData.offer.rooms + ' комнаты для ' + advertData.offer.guests + ' гостей';
-    cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + advertData.offer.checkin + ', выезд до ' + advertData.offer.checkout;
-    cardElement.querySelector('.popup__description').textContent = advertData.offer.description;
+
     addCardPhotos(cardElement, advertData);
     addCardFeatures(cardElement, advertData);
+
+    if (advertData.offer.price) {
+      cardPrice.textContent = advertData.offer.price + ' ₽/ночь';
+    } else {
+      cardPrice.remove();
+    }
+
+    if (advertData.offer.checkin && advertData.offer.checkout) {
+      cardTime.textContent = 'Заезд после ' + advertData.offer.checkin + ', выезд до ' + advertData.offer.checkout;
+    } else {
+      cardTime.remove();
+    }
+
+    if (advertData.offer.description) {
+      cardDescription.textContent = advertData.offer.description;
+    } else {
+      cardDescription.remove();
+    }
+
     window.map.element.insertAdjacentElement('afterbegin', cardElement);
 
     popupClose.addEventListener('click', function () {
