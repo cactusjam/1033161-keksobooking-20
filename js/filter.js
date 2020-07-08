@@ -1,7 +1,6 @@
 'use strict';
 (function () {
   var DEFAULT_FILTER_VALUE = 'any';
-  var DEBOUNCE_INTERVAL = 300;
 
   var filterForm = document.querySelector('.map__filters');
   var housingType = filterForm.querySelector('#housing-type');
@@ -63,27 +62,20 @@
     });
     return filteredAdvs;
   }
-  var lastTimeout = null;
 
-  function onFilterChange() {
-    window.pin.remove();
-    window.card.remove();
+  function updatePins() {
     var filteredAdvs = filterOffers(window.map.offers);
-    if (lastTimeout) {
-      window.clearTimeout(lastTimeout);
-    }
-    lastTimeout = window.setTimeout(function () {
-      window.map.updatePins(filteredAdvs);
-    }, DEBOUNCE_INTERVAL);
+    window.map.updatePins(filteredAdvs);
   }
 
-  var activateFilter = function () {
-    filterForm.addEventListener('change', onFilterChange);
-  };
+  filterForm.addEventListener('change', window.debounce(function () {
+    window.card.remove();
+    window.pin.remove();
+    updatePins();
+  }));
 
   window.filter = {
     run: filterOffers,
-    change: onFilterChange,
-    activate: activateFilter
+    updatePins: updatePins
   };
 })();
