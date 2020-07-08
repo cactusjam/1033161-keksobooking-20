@@ -64,6 +64,7 @@
     if (adForm.classList.contains('ad-form--disabled')) {
       adForm.classList.remove('ad-form--disabled');
       window.util.toggleElementsDisabled(adFormFieldset, false);
+      window.imgLoader.activate();
       addressCoords(window.pin.сoords(true));
       addFormListener();
     }
@@ -72,9 +73,11 @@
   function disableForm() {
     adForm.classList.add('ad-form--disabled');
     window.util.toggleElementsDisabled(adFormFieldset, true);
-    removeFormListener();
     adForm.reset();
+    window.imgLoader.disable();
+
     addressCoords(window.pin.сoords(false));
+    removeFormListener();
   }
   disableForm();
 
