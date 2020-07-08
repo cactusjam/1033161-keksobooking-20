@@ -27,7 +27,6 @@
 
   function enableMap() {
     if (map.classList.contains('map--faded')) {
-      // window.filter.activate();
       window.backend.load(onDataLoad);
       map.classList.remove('map--faded');
       window.util.toggleElementsDisabled(mapItems, false);

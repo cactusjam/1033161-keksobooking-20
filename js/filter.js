@@ -1,6 +1,7 @@
 'use strict';
 (function () {
   var DEFAULT_FILTER_VALUE = 'any';
+  var MAX_COUNT_PINS_ON_MAP = 5;
 
   var filterForm = document.querySelector('.map__filters');
   var housingType = filterForm.querySelector('#housing-type');
@@ -53,13 +54,20 @@
 
   function filterOffers(adverts) {
     var filteredAdvs = [];
-    filteredAdvs = adverts.filter(function (item) {
-      return filterByType(item) &&
+    for (var i = 0; i < adverts.length; i++) {
+      var item = adverts[i];
+      if (filterByType(item) &&
         filterByPrice(item) &&
         filterByRooms(item) &&
         filterByGuests(item) &&
-        filterByFeatures(item);
-    });
+        filterByFeatures(item)
+      ) {
+        filteredAdvs.push(item);
+      }
+      if (filteredAdvs.length === MAX_COUNT_PINS_ON_MAP) {
+        break;
+      }
+    }
     return filteredAdvs;
   }
 
