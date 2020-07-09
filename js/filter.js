@@ -1,7 +1,7 @@
 'use strict';
 (function () {
   var DEFAULT_FILTER_VALUE = 'any';
-  var DEBOUNCE_INTERVAL = 300;
+  var MAX_COUNT_PINS_ON_MAP = 5;
 
   var filterForm = document.querySelector('.map__filters');
   var housingType = filterForm.querySelector('#housing-type');
@@ -54,36 +54,36 @@
 
   function filterOffers(adverts) {
     var filteredAdvs = [];
-    filteredAdvs = adverts.filter(function (item) {
-      return filterByType(item) &&
+    for (var i = 0; i < adverts.length; i++) {
+      var item = adverts[i];
+      if (filterByType(item) &&
         filterByPrice(item) &&
         filterByRooms(item) &&
         filterByGuests(item) &&
-        filterByFeatures(item);
-    });
+        filterByFeatures(item)
+      ) {
+        filteredAdvs.push(item);
+      }
+      if (filteredAdvs.length === MAX_COUNT_PINS_ON_MAP) {
+        break;
+      }
+    }
     return filteredAdvs;
   }
-  var lastTimeout = null;
 
-  function onFilterChange() {
-    window.pin.remove();
-    window.card.remove();
+  function updatePins() {
     var filteredAdvs = filterOffers(window.map.offers);
-    if (lastTimeout) {
-      window.clearTimeout(lastTimeout);
-    }
-    lastTimeout = window.setTimeout(function () {
-      window.map.updatePins(filteredAdvs);
-    }, DEBOUNCE_INTERVAL);
+    window.map.updatePins(filteredAdvs);
   }
 
-  var activateFilter = function () {
-    filterForm.addEventListener('change', onFilterChange);
-  };
+  filterForm.addEventListener('change', window.debounce(function () {
+    window.card.remove();
+    window.pin.remove();
+    updatePins();
+  }));
 
   window.filter = {
     run: filterOffers,
-    change: onFilterChange,
-    activate: activateFilter
+    updatePins: updatePins
   };
 })();
