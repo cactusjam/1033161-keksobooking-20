@@ -39,14 +39,23 @@
     }
   };
 
-  houseType.addEventListener('change', onHouseTypeChange);
-
   function onHouseTypeChange(event) {
     var target = event.target;
-    var amount = placeType[target.value].minPrice;
-    rentPrice.min = amount;
-    rentPrice.placeholder = amount;
+    var minAmount = placeType[target.value].minPrice;
+    rentPrice.min = minAmount;
+    rentPrice.placeholder = minAmount;
   }
+  houseType.addEventListener('change', onHouseTypeChange);
+
+  function checkPriceValidity() {
+    var minAmount = placeType[houseType.value].minPrice;
+    if (rentPrice.value < minAmount) {
+      rentPrice.setCustomValidity('Для данного типа жилья минимальная цена должна быть больше');
+    } else {
+      rentPrice.setCustomValidity('');
+    }
+  }
+  rentPrice.addEventListener('change', checkPriceValidity);
 
   function addFormListener() {
     adFormSubmit.addEventListener('click', adFormSubmitClick);
@@ -94,6 +103,9 @@
       adFormGuests.setCustomValidity('');
     }
   }
+
+  adFormRooms.addEventListener('change', checkRoomValidity);
+  adFormGuests.addEventListener('change', checkRoomValidity);
 
   function adFormSubmitClick() {
     checkRoomValidity();
