@@ -66,7 +66,7 @@
   }
 
   function addressCoords(coords) {
-    adFormAddress.value = Math.ceil(coords.x) + ', ' + Math.ceil(coords.y);
+    adFormAddress.value = coords.x + ', ' + coords.y;
   }
 
   function enableForm() {
@@ -84,8 +84,7 @@
     window.util.toggleElementsDisabled(adFormFieldset, true);
     adForm.reset();
     window.imgLoader.disable();
-
-    addressCoords(window.pin.сoords(false));
+    addressCoords(window.pin.defaultCoords());
     removeFormListener();
   }
   disableForm();

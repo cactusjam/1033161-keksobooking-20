@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   var pin = document.querySelector('#pin').content.querySelector('.map__pin');
   var mainPin = document.querySelector('.map__pin--main');
   var MAX_RENDERED_PINS_COUNT = 5;
@@ -12,10 +11,9 @@
   };
 
   var mapPinMain = {
-    WIDTH: mainPin.offsetWidth,
-    HEIGHT: 65,
-    POINTER: 22,
-    TOTAL_HEIGHT: 84,
+    WIDTH: 62 / 2,
+    HEIGHT: 62,
+    POINTER: 14,
     START_LEFT: 570,
     START_TOP: 375
   };
@@ -71,11 +69,6 @@
     }
   }
 
-  function centerTheMainPin() {
-    mainPin.style.left = mapPinMain.START_LEFT + 'px';
-    mainPin.style.top = mapPinMain.START_TOP + 'px';
-  }
-
   mainPin.addEventListener('mousedown', function (evt) {
     if (evt.which === 1) {
       var startCoords = {
@@ -105,9 +98,9 @@
         };
 
         var Border = {
-          TOP: window.map.size.yMin - mapPinMain.TOTAL_HEIGHT,
-          BOTTOM: window.map.size.yMax - mapPinMain.TOTAL_HEIGHT,
-          LEFT: window.map.size.xMin,
+          TOP: window.map.size.yMin + mapPinMain.HEIGHT - mapPinMain.POINTER,
+          BOTTOM: window.map.size.yMax + mapPinMain.HEIGHT - mapPinMain.POINTER,
+          LEFT: window.map.size.xMin - mapPinMain.WIDTH,
           RIGHT: window.map.size.xMax - mapPinMain.WIDTH
         };
 
@@ -141,8 +134,8 @@
 
   function getMapPinMainCoords(active) {
     var pointerCoord = active === true ? mapPinMain.HEIGHT / 2 + mapPinMain.POINTER : 0;
-    var coordX = mainPin.offsetLeft + mapPinMain.WIDTH / 2;
-    var coordY = mainPin.offsetTop + mapPinMain.HEIGHT / 2 + pointerCoord;
+    var coordX = mainPin.offsetLeft + mapPinMain.WIDTH;
+    var coordY = mainPin.offsetTop + pointerCoord;
 
     return {
       x: coordX,
@@ -150,11 +143,24 @@
     };
   }
 
+  function getMainPinDefaultCoords() {
+    return {
+      x: mapPinMain.START_LEFT + mapPinMain.WIDTH,
+      y: mapPinMain.START_TOP
+    };
+  }
+
+  function centerTheMainPin() {
+    mainPin.style.left = mapPinMain.START_LEFT + 'px';
+    mainPin.style.top = mapPinMain.START_TOP + 'px';
+  }
+
   window.pin = {
     сoords: getMapPinMainCoords,
     remove: removePins,
     mainPin: mainPin,
     renderList: renderPins,
-    centerTheMainPin: centerTheMainPin
+    centerTheMainPin: centerTheMainPin,
+    defaultCoords: getMainPinDefaultCoords
   };
 })();
