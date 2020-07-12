@@ -55,7 +55,7 @@
     avatarChooser.removeEventListener('change', loadAvatarHandler);
     avatarPreview.src = defaultAvatar;
     imagePreview.innerHTML = '';
-  };
+  }
 
   window.imgLoader = {
     activate: activateImgLoader,
