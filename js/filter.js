@@ -2,7 +2,10 @@
 (function () {
   var DEFAULT_FILTER_VALUE = 'any';
   var MAX_COUNT_PINS_ON_MAP = 5;
-
+  var Price = {
+    MIDDLE: 10000,
+    HIGH: 50000
+  };
   var filterForm = document.querySelector('.map__filters');
   var housingType = filterForm.querySelector('#housing-type');
   var housingPrice = filterForm.querySelector('#housing-price');
@@ -13,10 +16,6 @@
     LOW: 'low',
     MIDDLE: 'middle',
     HIGH: 'high'
-  };
-  var Price = {
-    MIDDLE: 10000,
-    HIGH: 50000
   };
 
   function filterByType(item) {
@@ -72,8 +71,8 @@
   }
 
   function updatePins() {
-    var filteredAdvs = filterOffers(window.map.offers);
-    window.map.updatePins(filteredAdvs);
+    var filtration = filterOffers(window.map.offers);
+    window.map.updatePins(filtration);
   }
 
   filterForm.addEventListener('change', window.debounce(function () {

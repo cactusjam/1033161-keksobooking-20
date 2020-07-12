@@ -52,12 +52,11 @@
 
     if (advertData.offer.features.length) {
       popupFeatures.innerHTML = '';
-
-      for (var i = 0; i < advertData.offer.features.length; i++) {
+      advertData.offer.features.forEach(function (feature) {
         var featureItem = document.createElement('li');
-        featureItem.classList = 'popup__feature popup__feature--' + advertData.offer.features[i];
+        featureItem.classList = 'popup__feature popup__feature--' + feature;
         featuresFragment.appendChild(featureItem);
-      }
+      });
       popupFeatures.appendChild(featuresFragment);
     } else {
       popupFeatures.remove();
@@ -70,11 +69,11 @@
     if (advertData.offer.photos.length) {
       popupPhoto.src = advertData.offer.photos[0];
 
-      for (var i = 1; i < advertData.offer.photos.length; i++) {
+      advertData.offer.photos.forEach(function (photo) {
         var newPhotoImg = popupPhoto.cloneNode(true);
-        newPhotoImg.src = advertData.offer.photos[i];
+        newPhotoImg.src = photo;
         cardsPhotoCollection.appendChild(newPhotoImg);
-      }
+      });
     } else {
       popupPhoto.remove();
     }

@@ -47,7 +47,7 @@
   }
   houseType.addEventListener('change', onHouseTypeChange);
 
-  function checkPriceValidity() {
+  function checkPriceValidityHandler() {
     var minAmount = placeType[houseType.value].minPrice;
     if (rentPrice.value < minAmount) {
       rentPrice.setCustomValidity('Для данного типа жилья минимальная цена должна быть больше');
@@ -55,14 +55,14 @@
       rentPrice.setCustomValidity('');
     }
   }
-  rentPrice.addEventListener('change', checkPriceValidity);
+  rentPrice.addEventListener('change', checkPriceValidityHandler);
 
   function addFormListener() {
-    adFormSubmit.addEventListener('click', adFormSubmitClick);
+    adFormSubmit.addEventListener('click', adFormSubmitClickHandler);
   }
 
   function removeFormListener() {
-    adFormSubmit.removeEventListener('click', adFormSubmitClick);
+    adFormSubmit.removeEventListener('click', adFormSubmitClickHandler);
   }
 
   function addressCoords(coords) {
@@ -74,7 +74,7 @@
       adForm.classList.remove('ad-form--disabled');
       window.util.toggleElementsDisabled(adFormFieldset, false);
       window.imgLoader.activate();
-      addressCoords(window.pin.сoords(true));
+      addressCoords(window.pin.coords(true));
       addFormListener();
     }
   }
@@ -89,7 +89,7 @@
   }
   disableForm();
 
-  function checkRoomValidity() {
+  function checkRoomValidityHandler() {
     var roomsValue = Number(adFormRooms.value);
     var guestsValue = Number(adFormGuests.value);
     if (roomsValue === 100 && guestsValue !== 0) {
@@ -103,11 +103,11 @@
     }
   }
 
-  adFormRooms.addEventListener('change', checkRoomValidity);
-  adFormGuests.addEventListener('change', checkRoomValidity);
+  adFormRooms.addEventListener('change', checkRoomValidityHandler);
+  adFormGuests.addEventListener('change', checkRoomValidityHandler);
 
-  function adFormSubmitClick() {
-    checkRoomValidity();
+  function adFormSubmitClickHandler() {
+    checkRoomValidityHandler();
   }
 
   function createSuccessfulMessage() {

@@ -12,7 +12,7 @@
     xMax: 1200
   };
 
-  function onDataLoad(responseData) {
+  function DataLoadHandler(responseData) {
     responseData.forEach(function (adv, index) {
       adv.id = index + 1;
     });
@@ -27,7 +27,7 @@
 
   function enableMap() {
     if (map.classList.contains('map--faded')) {
-      window.backend.load(onDataLoad);
+      window.backend.load(DataLoadHandler);
       map.classList.remove('map--faded');
       window.util.toggleElementsDisabled(mapItems, false);
     }
@@ -39,7 +39,7 @@
       window.util.toggleElementsDisabled(mapItems, true);
       window.pin.remove();
       filterForm.reset();
-      window.pin.centerTheMainPin();
+      window.pin.centerTheElement();
     }
   }
 
@@ -50,7 +50,6 @@
     element: map,
     enable: enableMap,
     disable: disableMap,
-    onDataLoad: onDataLoad,
     pinsContainer: pinsContainer,
     updatePins: updatePinsOnMap,
     filterForm: filterForm
