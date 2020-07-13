@@ -47,7 +47,7 @@
   }
   houseType.addEventListener('change', onHouseTypeChange);
 
-  function checkPriceValidityHandler() {
+  function priceValidityCheckHandler() {
     var minAmount = placeType[houseType.value].minPrice;
     if (rentPrice.value < minAmount) {
       rentPrice.setCustomValidity('Для данного типа жилья минимальная цена должна быть больше');
@@ -55,7 +55,7 @@
       rentPrice.setCustomValidity('');
     }
   }
-  rentPrice.addEventListener('change', checkPriceValidityHandler);
+  rentPrice.addEventListener('change', priceValidityCheckHandler);
 
   function addFormListener() {
     adFormSubmit.addEventListener('click', adFormSubmitClickHandler);
@@ -89,7 +89,7 @@
   }
   disableForm();
 
-  function checkRoomValidityHandler() {
+  function roomValidityCheckHandler() {
     var roomsValue = Number(adFormRooms.value);
     var guestsValue = Number(adFormGuests.value);
     if (roomsValue === 100 && guestsValue !== 0) {
@@ -103,11 +103,11 @@
     }
   }
 
-  adFormRooms.addEventListener('change', checkRoomValidityHandler);
-  adFormGuests.addEventListener('change', checkRoomValidityHandler);
+  adFormRooms.addEventListener('change', roomValidityCheckHandler);
+  adFormGuests.addEventListener('change', roomValidityCheckHandler);
 
   function adFormSubmitClickHandler() {
-    checkRoomValidityHandler();
+    roomValidityCheckHandler();
   }
 
   function createSuccessfulMessage() {
@@ -125,7 +125,7 @@
     window.util.setCloseOnEsc(errorMessage);
   }
 
-  function onFormSendSuccess() {
+  function formSuccessSendHandler() {
     createSuccessfulMessage();
     disableForm();
     window.map.disable();
@@ -134,7 +134,7 @@
   adForm.addEventListener('submit', function (evt) {
     window.backend.upload(
         new FormData(adForm),
-        onFormSendSuccess,
+        formSuccessSendHandler,
         createErrorMessage
     );
     evt.preventDefault();

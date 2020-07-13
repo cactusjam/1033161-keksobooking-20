@@ -73,7 +73,6 @@
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
     }
-
     if (evt.which === 1) {
       var startCoords = {
         x: evt.clientX,
@@ -82,43 +81,43 @@
 
       window.form.enable();
       window.map.enable();
-
-      var mouseMoveHandler = function (moveEvt) {
-        moveEvt.preventDefault();
-
-        var shift = {
-          x: startCoords.x - moveEvt.clientX,
-          y: startCoords.y - moveEvt.clientY
-        };
-
-        startCoords = {
-          x: moveEvt.clientX,
-          y: moveEvt.clientY
-        };
-
-        var mainPinPosition = {
-          x: mainPin.offsetLeft - shift.x,
-          y: mainPin.offsetTop - shift.y
-        };
-
-        var Border = {
-          TOP: window.map.size.yMin - mapPinMain.HEIGHT - mapPinMain.POINTER,
-          BOTTOM: window.map.size.yMax - mapPinMain.HEIGHT - mapPinMain.POINTER,
-          LEFT: window.map.size.xMin - mapPinMain.WIDTH,
-          RIGHT: window.map.size.xMax - mapPinMain.WIDTH
-        };
-
-        if (mainPinPosition.x >= Border.LEFT && mainPinPosition.x <= Border.RIGHT) {
-          mainPin.style.left = mainPinPosition.x + 'px';
-        }
-        if (mainPinPosition.y >= Border.TOP && mainPinPosition.y <= Border.BOTTOM) {
-          mainPin.style.top = mainPinPosition.y + 'px';
-        }
-        window.form.addressCoords(getMapPinMainCoords(true));
-      };
-      document.addEventListener('mousemove', mouseMoveHandler);
-      document.addEventListener('mouseup', mouseUpHandler);
     }
+
+    function mouseMoveHandler(moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      var mainPinPosition = {
+        x: mainPin.offsetLeft - shift.x,
+        y: mainPin.offsetTop - shift.y
+      };
+
+      var Border = {
+        TOP: window.map.size.yMin - mapPinMain.HEIGHT - mapPinMain.POINTER,
+        BOTTOM: window.map.size.yMax - mapPinMain.HEIGHT - mapPinMain.POINTER,
+        LEFT: window.map.size.xMin - mapPinMain.WIDTH,
+        RIGHT: window.map.size.xMax - mapPinMain.WIDTH
+      };
+
+      if (mainPinPosition.x >= Border.LEFT && mainPinPosition.x <= Border.RIGHT) {
+        mainPin.style.left = mainPinPosition.x + 'px';
+      }
+      if (mainPinPosition.y >= Border.TOP && mainPinPosition.y <= Border.BOTTOM) {
+        mainPin.style.top = mainPinPosition.y + 'px';
+      }
+      window.form.addressCoords(getMapPinMainCoords(true));
+    }
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
   });
 
   mainPin.addEventListener('keydown', function (evt) {

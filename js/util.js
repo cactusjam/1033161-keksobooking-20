@@ -2,8 +2,8 @@
 
 (function () {
 
-  function toggleElementsDisabled(array, state) {
-    array.forEach(function (select) {
+  function toggleElementsDisabled(elements, state) {
+    elements.forEach(function (select) {
       select.disabled = state;
     });
   }

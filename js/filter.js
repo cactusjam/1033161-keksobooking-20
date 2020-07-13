@@ -52,7 +52,7 @@
   }
 
   function filterOffers(adverts) {
-    var filteredAdvs = [];
+    var ads = [];
     for (var i = 0; i < adverts.length; i++) {
       var item = adverts[i];
       if (filterByType(item) &&
@@ -61,13 +61,13 @@
         filterByGuests(item) &&
         filterByFeatures(item)
       ) {
-        filteredAdvs.push(item);
+        ads.push(item);
       }
-      if (filteredAdvs.length === MAX_COUNT_PINS_ON_MAP) {
+      if (ads.length === MAX_COUNT_PINS_ON_MAP) {
         break;
       }
     }
-    return filteredAdvs;
+    return ads;
   }
 
   function updatePins() {

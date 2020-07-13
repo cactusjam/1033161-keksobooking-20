@@ -14,7 +14,7 @@
     });
   }
 
-  function loadPhotoHandler() {
+  function imageInputChangeHandler() {
     var file = imageChooser.files[0];
 
     if (isTrueImg(file)) {
@@ -31,7 +31,7 @@
     }
   }
 
-  function loadAvatarHandler() {
+  function avatarInputChangeHandler() {
     var file = avatarChooser.files[0];
 
     if (isTrueImg(file)) {
@@ -46,13 +46,13 @@
   }
 
   function activateImgLoader() {
-    imageChooser.addEventListener('change', loadPhotoHandler);
-    avatarChooser.addEventListener('change', loadAvatarHandler);
+    imageChooser.addEventListener('change', imageInputChangeHandler);
+    avatarChooser.addEventListener('change', avatarInputChangeHandler);
   }
 
   function disableImgLoader() {
-    imageChooser.removeEventListener('change', loadPhotoHandler);
-    avatarChooser.removeEventListener('change', loadAvatarHandler);
+    imageChooser.removeEventListener('change', imageInputChangeHandler);
+    avatarChooser.removeEventListener('change', avatarInputChangeHandler);
     avatarPreview.src = defaultAvatar;
     imagePreview.innerHTML = '';
   }
